@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>主持人词</title>
+    <link rel="stylesheet" href="./mobileCss/hostWord.css">
+    <script src="./mobileJs/jquery-3.4.1.min.js"></script>
+    <script src="./mobileJs/rem.js"></script>
+    <script src="./mobileJs/getApi.js"></script>
+    <script src="./layer/layer.js"></script>
+</head>
+
+<body>
+    <div id="hostWord">
+        <div class="title">
+            <img id="goback" src="./mobileImg/icon_back.png" alt="" srcset="">
+            <div class="title_text">主持人词</div>
+            <div></div>
+        </div>
+        <div class="main_tab">
+            <div class="tab_menu">
+            </div>
+            <div class="tab_box">
+            </div>
+            <div class="null">
+                <div class="main_tab_null">
+                    <div class="main_tab_null_text">暂未发布主持人词</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    //sArgName表示要获取哪个参数的值
+    var sHref = window.location.href;
+    //CuPlayer.com提示：测试数据
+    //实际情况是用window.location.href得到URL
+    var args = sHref.split("?");
+    // var activityIds = "";
+    // if (args[0] == sHref) /*参数为空*/ {
+    //     return activityId; /*CuPlayer.com提示：无需做任何处理*/
+    // }
+    var str = args[1];
+    var activityId = "";
+    var userId = ''
+    args = str.split("&");
+    for (var i = 0; i < args.length; i++) {
+        str = args[i];
+        var arg = str.split("=");
+        if (arg.length <= 1) continue;
+        if (arg[0] == 'activityId') activityId = arg[1];
+        if (arg[0] == 'userId') userId = arg[1];
+    }
+    function getHostWord(activityId) {
+        // $.post(apiUrl + "activity/word", { activity_id: activityId }, function (res) {
+        //     if (res.code == 0) {
+        //         if (res.data.length > 0) {
+        //             let $ul = $('<ul></ul>')
+        //             let $main = $('<div class="tab_box"></div>')
+        //             res.data.forEach((item, i) => {
+        //                 //  class="active"
+        //                 let $li = $('<li><p>' + item.title + '</p></li>');
+        //                 let $div = $('<div class="tab_box_text"><p>' + item.word + '</p></div>')
+        //                 if (i == 0) {
+        //                     $li.addClass("change");
+        //                     $li.children('p').addClass("active");
+        //                 }
+        //                 $ul.append($li);
+        //                 $main.append($div);
+        //             });
+        //             $('.tab_menu').html($ul);
+        //             $('.tab_box').replaceWith($main)
+        //             tabCheck();
+        //         } else {
+        //             $('.main_tab_null').css('height', window.innerHeight / 100 * 2 - 1 + 'rem');
+        //             $('.tab_menu').css('display', 'none');
+        //             $('.tab_box').css('display', 'none');
+        //             $('.null').css('display', 'block');
+        //         }
+        //     }
+        // }, 'json');
+        ajax({
+            url: "activity/word", // url---->地址
+            type: "POST", // type ---> 请求方式
+            async: true, // async----> 同步：false，异步：true 
+            data: { activity_id: activityId, user_id: userId },
+            success: function (res) { //返回接受信息
+                res = JSON.parse(res);
+                if (res.code == 0) {
+                    if (res.data.length > 0) {
+                        let $ul = $('<ul></ul>')
+                        let $main = $('<div class="tab_box"></div>')
+                        res.data.forEach((item, i) => {
+                            //  class="active"
+                            let $li = $('<li><p>' + item.title + '</p></li>');
+                            let $div = $('<div class="tab_box_text"><p>' + item.word + '</p></div>')
+                            if (i == 0) {
+                                $li.addClass("change");
+                                $li.children('p').addClass("active");
+                            }
+                            $ul.append($li);
+                            $main.append($div);
+                        });
+                        $('.tab_menu').html($ul);
+                        $('.tab_box').replaceWith($main)
+                        tabCheck();
+                    } else {
+                        $('.main_tab_null').css('height', window.innerHeight / 100 * 2 - 1 + 'rem');
+                        $('.tab_menu').css('display', 'none');
+                        $('.tab_box').css('display', 'none');
+                        $('.null').css('display', 'block');
+                    }
+                } else {
+                    layer.msg(res.msg, {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    });
+                }
+
+            }
+        })
+    }
+    getHostWord(activityId);
+    $('#hostWord').css('height', window.innerHeight + 'px');
+    $('#goback').click(function () {
+        history.back(-1);
+    })
+    function tabCheck() {
+        $('.main_tab').css('height', window.innerHeight + 'px');
+        let tabStyle = {
+            height: window.innerHeight / 100 * 2 - 1 + 'rem',
+            overflowY: 'auto'
+        }
+        $('.tab_menu').css(tabStyle);
+        $('.tab_box').css(tabStyle);
+        $().ready(function () {
+            $(".tab_menu li").click(function () {
+                //通过 .index()方法获取元素下标，从0开始，赋值给某个变量
+                var _index = $(this).index();
+                //让内容框的第 _index 个显示出来，其他的被隐藏
+                $(".tab_box>.tab_box_text").eq(_index).show().siblings().hide();
+                //改变选中时候的选项框的样式，移除其他几个选项的样式
+                $(this).children('p').addClass("active");
+                $(this).siblings().children('p').removeClass("active");
+                $(this).addClass("change").siblings().removeClass("change");
+            });
+        });
+    }
+</script>
+
+</html>

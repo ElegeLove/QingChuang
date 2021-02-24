@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>座次安排</title>
+    <link rel="stylesheet" href="./mobileCss/orderSet.css">
+    <script src="./mobileJs/jquery-3.4.1.min.js"></script>
+    <script src="./mobileJs/rem.js"></script>
+    <script src="./mobileJs/getApi.js"></script>
+    <script src="./layer/layer.js"></script>
+    <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+</head>
+
+<body>
+    <div id="orderSet">
+        <!-- <div class="big_top"> -->
+        <!-- <div class="big_top_wen"> -->
+        <!-- <img src="./mobileImg/index_bg_wen.png" alt="" srcset=""></img> -->
+        <div class="big_top_bg">
+            <div class="title">
+                <img id="goback" src="./mobileImg/icon_back.png" alt="" srcset="">
+                <div class="title_text">座次安排</div>
+                <div style="width: 0.36rem;"></div>
+            </div>
+            <p class="seat"></p>
+            <div class="orderSet_main">
+                <!-- <div class="over"></div> -->
+                <!--背景层-->
+                <!-- <div class="logoImg amplifyImg"> -->
+                <!--注意：此处的amlifyImg不可少-->
+                <img class="sear_img" src="" />
+                <!-- </div> -->
+                <!-- <div class="sear_img"></div> -->
+            </div>
+        </div>
+        <!-- </div> -->
+        <!-- </div> -->
+    </div>
+</body>
+<script>
+    //sArgName表示要获取哪个参数的值
+    var sHref = window.location.href;
+    //CuPlayer.com提示：测试数据
+    //实际情况是用window.location.href得到URL
+    var args = sHref.split("?");
+    // var activityIds = "";
+    // if (args[0] == sHref) /*参数为空*/ {
+    //     return activityId; /*CuPlayer.com提示：无需做任何处理*/
+    // }
+    var str = args[1];
+    var activityId = "";
+    var userId = "";
+    args = str.split("&");
+    for (var i = 0; i < args.length; i++) {
+        str = args[i];
+        var arg = str.split("=");
+        if (arg.length <= 1) continue;
+        if (arg[0] == 'activityId') activityId = arg[1];
+        if (arg[0] == 'userId') userId = arg[1];
+    }
+    $('#orderSet').css('height', window.innerHeight + 'px');
+    $('#goback').click(function () {
+        history.back(-1);
+    })
+    function apiInfo(activityId, userId) {
+        // $.post(apiUrl + "activity/getSeat", { activity_id: activityId, user_id: userId }, function (res) {
+        //     if (res.code == 0) {
+        //         $('.seat').text('您的座位在：' + res.data.table_number + '号桌 ' + res.data.seat_number + '座');
+        //         $('.sear_img').css('background-image', "url(" + res.data.seat_img + ")");
+        //     }
+        // }, 'json');
+        ajax({
+            url: "activity/getSeat", // url---->地址
+            type: "POST", // type ---> 请求方式
+            async: true, // async----> 同步：false，异步：true 
+            data: { activity_id: activityId, user_id: userId },
+            success: function (res) { //返回接受信息
+                res = JSON.parse(res);
+                if (res.code == 0) {
+                    if (res.data.is_seat == 1) {
+                        $('.seat').css('display', 'block');
+                        $('.seat').text('您的座位在：' + res.data.table_number + '号桌 ' + res.data.seat_number + '座');
+                    } else {
+                        $('.seat').css('display', 'none');
+                    }
+                    // $('.sear_img').css('background-image', "url(" + res.data.seat_img + ")");
+                    // $('.sear_img').css('background-image', 'url(' + res.data.seat_img + ')');
+                    $('.sear_img').attr('src', res.data.seat_img)
+                } else {
+                    layer.msg(res.msg, {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    });
+                }
+
+            }
+        })
+
+    }
+    apiInfo(activityId, userId);
+    $('.sear_img').click(function () {
+        var imgs = [];
+        imgs.push($('.sear_img').attr('src'))
+        var nowImgurl = $('.sear_img').attr('src');
+        WeixinJSBridge.invoke("imagePreview", {
+            "urls": imgs,
+            "current": nowImgurl
+        });
+    })
+
+    // // 点击查看大图
+    // function funcReadImgInfo() {
+    //     var imgs = [];
+    //     var imgObj = $(".category .pic");//这里改成相应的对象
+    //     for (var i = 0; i < imgObj.length; i++) {
+    //         imgs.push(imgObj.eq(i).attr('src'));
+    //         imgObj.eq(i).click(function () {
+    //             var nowImgurl = $(this).attr('src');
+    //             WeixinJSBridge.invoke("imagePreview", {
+    //                 "urls": imgs,
+    //                 "current": nowImgurl
+    //             });
+    //         });
+    //     }
+    // }
+</script>
+
+</html>

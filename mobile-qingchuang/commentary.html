@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>评节目</title>
+    <link rel="stylesheet" href="./mobileCss/commentary.css">
+    <script src="./mobileJs/jquery-3.4.1.min.js"></script>
+    <script src="./mobileJs/rem.js"></script>
+    <script src="./mobileJs/getApi.js"></script>
+    <script src="./layer/layer.js"></script>
+</head>
+
+<body>
+    <div id="bigActivity">
+        <div class="big_top">
+            <div class="big_top_wen">
+                <!-- <img src="./mobileImg/index_bg_wen.png" alt="" srcset=""></mobileImg> -->
+                <div class="big_top_bg">
+                    <div class="title">
+                        <img id="goback" src="./mobileImg/back.png" alt="" srcset="">
+                        <div class="title_text">节目评选</div>
+                        <div style="width: 0.36rem;"></div>
+                    </div>
+                    <div class="big_top_text">活动结束倒计时<span class="big_top_time"></span></div>
+                    <div class="top_main">
+                        <div class="big_top_main">
+                            <div class="search_input">
+                                <div class="search_input_main">
+                                    <!-- <img src="./mobileImg/icon_commentary_input.png" alt="" srcset=""> -->
+                                    <img src="./mobileImg/icon_search.png" alt="" srcset="">
+                                    <input id="activeName" type="text" value="请输入节目名称查询" disabled="disabled">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="program">
+                        <div class="program_title">
+                            <div>共<span class="program_title_num"></span>个节目</div>
+                            <div onclick="showAll()">查看全部</div>
+                        </div>
+                        <div class="program_mains">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main">
+            <div class="programName">
+                <div class="programName_title">
+                    <img src="./mobileImg/icon_programList_title.png" alt="" srcset="">
+                </div>
+                <div class="programName_main">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    // 滑动滚动条
+    $(window).scroll(function () {
+        if ($(window).scrollTop() >= $('.title').height() / 4 || $(window).scrollTop() < -6) {
+            $('.title').css('background', 'rgba(68, 38, 118, 1)')
+        } else {
+            $('.title').css('background', '')
+        }
+    });
+    //sArgName表示要获取哪个参数的值
+    var sHref = window.location.href;
+    //CuPlayer.com提示：测试数据
+    //实际情况是用window.location.href得到URL
+    var args = sHref.split("?");
+    // var activityIds = "";
+    // if (args[0] == sHref) /*参数为空*/ {
+    //     return activityId; /*CuPlayer.com提示：无需做任何处理*/
+    // }
+    var str = args[1];
+    var activityId = "";
+    var userId = "";
+    args = str.split("&");
+    for (var i = 0; i < args.length; i++) {
+        str = args[i];
+        var arg = str.split("=");
+        if (arg.length <= 1) continue;
+        if (arg[0] == 'activityId') activityId = arg[1];
+        if (arg[0] == 'userId') userId = arg[1];
+    }
+    getProgram(activityId, '');
+    getProgramSort(activityId);
+    function getProgram(activityId, search) {
+        ajax({
+            url: "activity/segmentList", // url---->地址
+            type: "POST", // type ---> 请求方式
+            async: true, // async----> 同步：false，异步：true 
+            data: { activity_id: activityId, search: search },
+            success: function (res) { //返回接受信息
+                res = JSON.parse(res);
+                if (res.code == 0) {
+                    let $programMain = $('<ul class="programName_List"></ul>')
+                    res.data.forEach((item, i) => {
+                        let str = $('<li class="programName_List_items"><img src=' + item.img + ' alt="" srcset=""><div class="programName_List_items_name">' + item.segment_name + '</div><div class="programName_List_items_btm"><div class="left"><span class="left_num">' + item.vote_count + '</span>票</div><div class="right" onclick="goVote(' + item.segment_id + ')">投票</div></div></li>');
+                        $programMain.append(str);
+                    });
+                    $('.programName_main').html($programMain)
+                    // var state = 1;
+                    if (res.data.length < 1) {
+                        $('.program_title_num').text('0');
+                        // $('.program_mains').text() = "<div>121212</div>";
+                        // $('.program_mains').replaceWith("<div class='program_null'>暂无节目排名</div>");
+                        $('.programName_List').replaceWith("<div class='program_null'>暂无节目</div>");
+                        var cssVal = {
+                            top: "-5rem",
+                            padding: "0",
+                        };
+                        $(".big_top").css('border-radius', '0');
+                        $(".programName").css(cssVal);
+                    }
+                } else {
+                    layer.msg(res.msg, {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    });
+                }
+
+            }
+        })
+    }
+    // let flag;
+    function getProgramSort(activityId) {
+        ajax({
+            url: "activity/threeList", // url---->地址
+            type: "POST", // type ---> 请求方式
+            async: true, // async----> 同步：false，异步：true 
+            data: { activity_id: activityId },
+            success: function (res) { //返回接受信息
+                res = JSON.parse(res);
+                if (res.code == 0) {
+                    if (res.data.time < 0) {
+                        $('.big_top_time').html('已结束');
+                    } else {
+                        let h = Math.floor(res.data.time / 60 / 60);
+                        let m = Math.floor((res.data.time - Math.floor(res.data.time / 60 / 60) * 60 * 60) / 60);
+                        let s = res.data.time - Math.floor(res.data.time / 60 / 60) * 60 * 60 - Math.floor((res.data.time - Math.floor(res.data.time / 60 / 60) * 60 * 60) / 60) * 60
+                        countDown(h, m, s)
+                    }
+                    // flag = res.data.time;
+                    $('.program_title_num').text(res.data.count);
+                    if (res.data.three_list.length < 1) {
+                        $('.program_mains').replaceWith("<div class='program_null'>暂无节目排名</div>");
+                    } else {
+                        let $programMain = $('<ul class="program_main"></ul>')
+                        res.data.three_list.forEach((item, i) => {
+                            if (i == 0) {
+                                let str = $('<li><div class="program_main_left"><img src="./mobileImg/icon_paiming_1.png" alt="" srcset=""><div>' + item.segment_name + '</div></div><div class="program_main_right">' + item.vote_count + '票</div></li>');
+                                $programMain.append(str);
+                            } else if (i == 1) {
+                                let str = $('<li><div class="program_main_left"><img src="./mobileImg/icon_paiming_2.png" alt="" srcset=""><div>' + item.segment_name + '</div></div><div class="program_main_right">' + item.vote_count + '票</div></li>');
+                                $programMain.append(str);
+                            } else {
+                                let str = $('<li><div class="program_main_left"><img src="./mobileImg/icon_paiming_3.png" alt="" srcset=""><div>' + item.segment_name + '</div></div><div class="program_main_right">' + item.vote_count + '票</div></li>');
+                                $programMain.append(str);
+                            }
+
+                        });
+                        $('.program_mains').html($programMain)
+                    }
+                } else {
+                    layer.msg(res.msg, {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    });
+                }
+
+            }
+        })
+    }
+
+    $('#goback').click(function () {
+        history.back(-1);
+    })
+    $('.search_input').click(function () {
+        $(window).attr('location', "search.html?activityId=" + activityId + "&userId=" + userId);
+    })
+    function showAll() {
+        $(window).attr('location', "rankingList.html?activityId=" + activityId);
+    }
+    function countDown(h, m, s) {
+        var timer = setInterval(function () {
+            if (h < 10) {
+                //如果秒数少于10在前面加上0
+                // $('.big_top_time').html('0' + h + ':' + m + ':0' + s);
+                if (m < 10) {
+                    //如果秒数少于10在前面加上0
+                    // $('.big_top_time').html(m + ':0' + s);
+                    if (s < 10) {
+                        //如果秒数少于10在前面加上0
+                        $('.big_top_time').html('0' + h + ':0' + m + ':0' + s);
+                    } else {
+                        $('.big_top_time').html('0' + h + ':0' + m + ':' + s);
+                    }
+                } else {
+                    // $('.big_top_time').html(m + ':' + s);
+                    if (s < 10) {
+                        //如果秒数少于10在前面加上0
+                        $('.big_top_time').html('0' + h + ':' + m + ':0' + s);
+                    } else {
+                        $('.big_top_time').html('0' + h + ':' + m + ':' + s);
+                    }
+                }
+            } else {
+                // $('.big_top_time').html(m + ':' + s);
+                if (m < 10) {
+                    //如果秒数少于10在前面加上0
+                    // $('.big_top_time').html(m + ':0' + s);
+                    if (s < 10) {
+                        //如果秒数少于10在前面加上0
+                        $('.big_top_time').html(h + ':0' + m + ':0' + s);
+                    } else {
+                        $('.big_top_time').html(h + ':0' + m + ':' + s);
+                    }
+                } else {
+                    // $('.big_top_time').html(m + ':' + s);
+                    if (s < 10) {
+                        //如果秒数少于10在前面加上0
+                        $('.big_top_time').html(h + ':' + m + ':0' + s);
+                    } else {
+                        $('.big_top_time').html(h + ':' + m + ':' + s);
+                    }
+                }
+            }
+            s--;
+            if (s < 0) {
+                //如果秒数少于0就变成59秒
+                s = 59;
+                m--;
+            }
+            if (m < 0) {
+                m = 59;
+                h--;
+            }
+            if (h < 0) {
+                clearInterval(timer)
+                $('.big_top_time').html('已结束');
+            }
+        }, 1000)
+    }
+    // 点击投票
+    function goVote(id) {
+        ajax({
+            url: "activity/vote", // url---->地址
+            type: "POST", // type ---> 请求方式
+            async: true, // async----> 同步：false，异步：true 
+            data: { segment_id: id, user_id: userId },
+            success: function (res) { //返回接受信息
+                res = JSON.parse(res);
+                if (res.code == 0) {
+                    getProgram(activityId,'');
+                    getProgramSort(activityId);
+                } else {
+                    layer.msg(res.msg, {
+                        icon: 2,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    });
+                }
+
+            }
+        })
+    }
+
+</script>
+
+</html>

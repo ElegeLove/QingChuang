@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>登录</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+        integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css"
+        integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+
+    <!-- <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css"> -->
+    <link rel="stylesheet" href="css/login.css">
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/rem.js"></script>
+    <script src="js/getApi.js"></script>
+    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+        integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+        crossorigin="anonymous"></script> -->
+
+</head>
+
+<body>
+    <div class="pageLogin">
+        <div class="main">
+            <div class="title">
+                <h2>重庆市青年企业家协会2020年年会大屏管理系统</h2>
+                <div>Chongqing Youth Entrepreneur Association Annual Meeting 2020 Large Screen Management System</div>
+            </div>
+            <div class="loginSty">
+                <h2>欢迎登录</h2>
+                <div class="userName">
+                    <!-- <img style="width: 16px;height: 16px;position: absolute;left:8px;top: 15px;" id="img_user"
+                        src="img/user_active.png"> -->
+                    <span id="user" class="userIcon glyphicon glyphicon-user"></span>
+                    <input class="loginInpt loginUser" onfocus="getuserClick()" onblur="userClick()" type="text"
+                        placeholder="请输入登录账户">
+                </div>
+                <div class="input_block">
+                    <span id="pwd" class="userPwd glyphicon glyphicon-lock"></span>
+                    <!-- <img style="width: 16px;height: 16px;position: absolute;left:16px;top: 15px;" src="img/mima.png"> -->
+                    <img id="demo_img" onclick="mimaClick()" src="img/mima_close.png">
+                    <input class="loginInpt loginPwd" onfocus="getpwdClick()" onblur="pwdClick()" type="password"
+                        id="demo_input" placeholder="请输入登录密码" />
+                </div>
+                <button class="btn" onclick="loginBtn()">登 录</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        var page = document.querySelector('.pageLogin');
+        $(document).ready(function () {
+            page.style.height = $(window).height() + 'px';
+            // page.style.width = $(document).width() + 'px';
+            $(window).resize(function () {  //当浏览器大小变化时
+                page.style.height = $(window).height() + 'px';
+            });
+        })
+        var demoImg = document.getElementById("demo_img");
+        var demoInput = document.getElementById("demo_input");
+        var user = document.getElementById("user");
+        var pwd = document.getElementById("pwd");
+        function mimaClick() {
+            if (demoInput.type == "password") {
+                demoInput.type = "text";
+                demo_img.src = "img/mima_yan.png";
+            } else {
+                demoInput.type = "password";
+                demo_img.src = "img/mima_close.png";
+            }
+        }
+        function getuserClick() {
+            user.style.color = '#2d93ec';
+        }
+        function userClick() {
+            user.style.color = '#999999';
+        }
+        function getpwdClick() {
+            pwd.style.color = '#2d93ec';
+        }
+        function pwdClick() {
+            pwd.style.color = '#999999';
+        }
+        var activityId = '';
+        ajax({
+            url: "screen/loginPage", // url---->地址
+            type: "POST", // type ---> 请求方式
+            async: true, // async----> 同步：false，异步：true 
+            data: {},
+            success: function (res) { //返回接受信息
+                res = JSON.parse(res);
+                if (res.code == 0) {
+                    activityId = res.data.activity_id;
+                    // $(window).attr('location', "index.html?activityId=" + activityId);
+                } else {
+                    alert(res.msg);
+                }
+
+            }
+        })
+        function loginBtn() {
+            // $.post(apiUrl + "screen/login", { activity_id: activityId, name: $('.loginUser').val(), password: $('.loginPwd').val() }, function (res) {
+            //     if (res.code == 0) {
+            //         $(window).attr('location', "index.html?activityId=" + activityId);
+            //     } else {
+            //         alert(res.msg);
+            //     }
+            // }, 'json');
+            ajax({
+                url: "screen/login", // url---->地址
+                type: "POST", // type ---> 请求方式
+                async: true, // async----> 同步：false，异步：true 
+                data: { activity_id: activityId, name: $('.loginUser').val(), password: $('.loginPwd').val() },
+                success: function (res) { //返回接受信息
+                    res = JSON.parse(res);
+                    if (res.code == 0) {
+                        $(window).attr('location', "index.html?activityId=" + activityId);
+                    } else {
+                        alert(res.msg);
+                    }
+
+                }
+            })
+        }
+    </script>
+</body>
+
+</html>

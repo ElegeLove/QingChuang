@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>签到墙</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+        integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css"
+        integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/signInWall.css">
+    <link rel="stylesheet" href="css/animate.min.css">
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/rem.js"></script>
+    <script src="./js/getApi.js"></script>
+</head>
+
+<body>
+    <!-- <script src="js/jquery.min.js"></script> -->
+    <script src="js/three.js"></script>
+    <script src="js/tween.min.js"></script>
+    <script src="js/TrackballControls.js"></script>
+    <script src="js/CSS3DRenderer.js"></script>
+
+    <div class="signInWall">
+        <div class="title">
+            <!-- <img src="./img/signInWall_title_bg.png" alt="" srcset=""> -->
+            <div class="title_text">
+            </div>
+        </div>
+        <div id="container">
+        </div>
+        <div class="footerMain">
+            <div class="footer">
+                <div class="footerLeft">
+                    <a href="index.html" class="footerLeft_items idnexPage">
+                        <img src="./img/index.png" alt="" srcset="">
+                        <p>首页</p>
+                    </a>
+                    <a href="openingEnd.html" class="footerLeft_items openingEndPage">
+                        <img src="./img/prologue.png" alt="" srcset="">
+                        <p>开场白</p>
+                    </a>
+                    <a href="#" class="footerLeft_items">
+                        <img src="./img/countdown.png" alt="" srcset="">
+                        <p>倒计时</p>
+                    </a>
+                    <a href="signInWall.html" class="footerLeft_items signInWallPage is_sign_wall">
+                        <img src="./img/signInWall.png" alt="" srcset="">
+                        <p>签到墙</p>
+                    </a>
+                    <a href="guestShow.html" class="footerLeft_items goGuestShowPage is_show_guest">
+                        <img src="./img/guestShow.png" alt="" srcset="">
+                        <p>嘉宾展示</p>
+                    </a>
+                    <a href="messageWall.html" class="footerLeft_items messageWallPage is_message_wall">
+                        <img src="./img/messageWall.png" alt="" srcset="">
+                        <p>消息上墙</p>
+                    </a>
+                    <a href="programSelection.html" class="footerLeft_items programSelectionPage is_program_appraise">
+                        <img src="./img/programSelection.png" alt="" srcset="">
+                        <p>节目评选</p>
+                    </a>
+                    <a href="bigDraw.html" class="footerLeft_items bigDrawPage is_lottery">
+                        <img src="./img/bigDraw.png" alt="" srcset="">
+                        <p>大抽奖</p>
+                    </a>
+                    <a href="javascript:;" class="footerLeft_items shakeEnvelopePage is_red">
+                        <img src="./img/redEnvelope.png" alt="" srcset="">
+                        <p>摇红包</p>
+                    </a>
+                    <a href="programLink.html" class="footerLeft_items programLinkPage is_segment">
+                        <img src="./img/programLink.png" alt="" srcset="">
+                        <p>节目环节</p>
+                    </a>
+                    <a href="excellence.html" class="footerLeft_items excellencePage is_people_appraise">
+                        <img src="./img/excellence.png" alt="" srcset="">
+                        <p>评先评优</p>
+                    </a>
+                    <a href="openingEnd.html" class="footerLeft_items openingEndsPage">
+                        <img src="./img/peroration.png" alt="" srcset="">
+                        <p>结束语</p>
+                    </a>
+                </div>
+                <div class="footerRight">
+                    <a href="javascript:;" class="footerLeft_items" onclick="startMusic()">
+                        <img class="bigImg" src="./img/play.png" alt="" srcset="">
+                        <p class="bigText">开始</p>
+                    </a>
+                    <a href="javascript:;" class="footerLeft_items" onclick="setVoice()">
+                        <img src="./img/mute.png" alt="" srcset="">
+                        <img class="imgVoice" src="./img/icon_prohibit.png" alt="">
+                        <p>静音</p>
+                    </a>
+                    <a href="javascript:;" class="footerLeft_items" style="cursor: no-drop;">
+                        <img src="./img/barrage.png" alt="" srcset="">
+                        <img class="imgProhibit" src="./img/icon_prohibit.png" alt="">
+                        <p>弹幕</p>
+                    </a>
+                    <a href="javascript:;" class="footerLeft_items" onclick="fullScreen()">
+                        <img src="./img/fullScreen.png" alt="" srcset="">
+                        <p>全屏</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $('.footer').hide();
+        $('.footerMain').mouseover(function () {
+            $('.footer').show();
+        });
+        $('.footerMain').mouseout(function () {
+            $('.footer').hide();
+        });
+        var bgAudio = document.createElement('audio'); new Audio();
+        bgAudio.setAttribute("src", './music/水一 - 左手指月 (Cover：萨顶顶).mp3');
+        bgAudio.loop = false;
+        // audio.controls = true;
+        // audio.src = './music/水一 - 左手指月 (Cover：萨顶顶).mp3';
+        // document.body.appendChild(audio);
+        let flags = true;
+        function startMusic() {
+            if (flags) {
+                bgAudio.play();
+                bgAudio.volume = 0.3;
+                $('.bigImg').attr('src', './img/suspend.png');
+                $('.bigText').text('暂停');
+            } else {
+                bgAudio.pause();
+                // 播放
+                $('.bigImg').attr('src', './img/play.png')
+                $('.bigText').text('开始');
+            }
+            flags = !flags;
+        }
+        bgAudio.addEventListener('ended', function () {
+            $('.bigImg').attr('src', './img/play.png');
+            $('.bigText').text('开始');
+            flags = true;
+        }, false);
+        // 静音设置
+        function setVoice() {
+            if (bgAudio.volume > 0) {
+                bgAudio.volume = 0;
+                $('.imgVoice').css('display', 'block');
+            } else {
+                bgAudio.volume = 0.3;
+                $('.imgVoice').css('display', 'none');
+            }
+        }
+
+        function fullScreen() {
+            fullscreen()
+        }
+        var fullscreen = function () {
+            elem = document.body;
+            if (elem.webkitRequestFullScreen) {
+                elem.webkitRequestFullScreen();
+            } else if (elem.mozRequestFullScreen) {
+                elem.mozRequestFullScreen();
+            } else if (elem.requestFullScreen) {
+                elem.requestFullscreen();
+            } else {
+                alert("浏览器不支持全屏API或已被禁用")
+            }
+        }
+        // $(window).attr('location', "redEnvelope.html?activityId=" + activityId + "&userId=" + userId)
+
+        //sArgName表示要获取哪个参数的值
+        var sHref = window.location.href;
+        //CuPlayer.com提示：测试数据
+        //实际情况是用window.location.href得到URL
+        var args = sHref.split("?");
+        // var activityIds = "";
+        // if (args[0] == sHref) /*参数为空*/ {
+        //     return activityId; /*CuPlayer.com提示：无需做任何处理*/
+        // }
+        var str = args[1];
+        var activityId = "";
+        // var userId = "";
+        // args = str.split("&");
+        for (var i = 0; i < args.length; i++) {
+            str = args[i];
+            var arg = str.split("=");
+            if (arg.length <= 1) continue;
+            if (arg[0] == 'activityId') activityId = arg[1];
+            // if (arg[0] == 'userId') userId = arg[1];
+        }
+        $('.idnexPage').attr('href', 'index.html?activityId=' + activityId);
+        $('.signInWallPage').attr('href', 'signInWall.html?activityId=' + activityId);
+        $('.goGuestShowPage').attr('href', 'guestShow.html?activityId=' + activityId);
+        $('.messageWallPage').attr('href', 'messageWall.html?activityId=' + activityId);
+        $('.programSelectionPage').attr('href', 'programSelection.html?activityId=' + activityId);
+        $('.shakeEnvelopePage').attr('href', 'startShakeEnvelope.html?activityId=' + activityId);
+        $('.bigDrawPage').attr('href', 'bigDraw.html?activityId=' + activityId);
+        $('.programLinkPage').attr('href', 'programLink.html?activityId=' + activityId);
+        $('.excellencePage').attr('href', 'excellence.html?activityId=' + activityId);
+        $('.openingEndPage').attr('href', 'openingEnd.html?activityId=' + activityId + '&id=1');
+        $('.openingEndsPage').attr('href', 'openingEnd.html?activityId=' + activityId + '&id=2');
+        ajax({
+            url: "screen/homePage", // url---->地址
+            type: "POST", // type ---> 请求方式
+            async: true, // async----> 同步：false，异步：true 
+            data: { activity_id: activityId },
+            success: function (res) { //返回接受信息
+                res = JSON.parse(res);
+                if (res.code == 0) {
+                    $('.title_text').text(res.data.activity_name + '来宾签到');
+                    bgAudio.setAttribute("src", res.data.sign_wall_music);
+                    if (res.data.is_sign_wall == 2) {
+                        $('.is_sign_wall').css('display', 'none');
+                    }
+                    if (res.data.is_show_guest == 2) {
+                        $('.is_show_guest').css('display', 'none');
+                    }
+                    if (res.data.is_people_appraise == 2) {
+                        $('.is_people_appraise').css('display', 'none');
+                    }
+                    if (res.data.is_segment == 2) {
+                        $('.is_segment').css('display', 'none');
+                    }
+                    if (res.data.is_red == 2) {
+                        $('.is_red').css('display', 'none');
+                    }
+                    if (res.data.is_lottery == 2) {
+                        $('.is_lottery').css('display', 'none');
+                    }
+                    if (res.data.is_message_wall == 2) {
+                        $('.is_message_wall').css('display', 'none');
+                    }
+                    if (res.data.is_program_appraise == 2) {
+                        $('.is_program_appraise').css('display', 'none');
+                    }
+                } else {
+                    alert(res.msg);
+                }
+
+            }
+        })
+        var page = document.querySelector('.signInWall');
+        $(document).ready(function () {
+            page.style.height = $(window).height() + 'px';
+            // page.style.width = $(document).width() + 'px';
+            $(window).resize(function () {  //当浏览器大小变化时
+                page.style.height = $(window).height() + 'px';
+            });
+        })
+        
+        var CurPersonNum = 0;
+        var sum = 0;
+        var imgLength = 0;
+        var table = new Array;
+        var camera, scene, renderer;
+        var controls;
+
+        var objects = [];
+        var targets = { sphere: [] };
+        getSignInfo() 
+        function getSignInfo() {
+            ajax({
+                url: "screen/signWall", // url---->地址
+                type: "POST", // type ---> 请求方式
+                async: true, // async----> 同步：false，异步：true 
+                data: { activity_id: activityId },
+                success: function (res) { //返回接受信息
+                    res = JSON.parse(res);
+                    if (res.code == 0) {
+                        let personArray = new Array;
+                        $('.signInWall').css('background-image', 'url(' + res.data.background + ')')
+                        imgLength = res.data.user_list.length;
+                        sum = res.data.min_count;
+                        personArray = res.data.user_list;
+                        // 生成虚拟数据
+                        for (var i = 0; i < sum - imgLength; i++) {
+                            personArray.push({
+                                user_icon: "img/1.png"
+                            });
+                        }
+                        for (var i = 0; i < personArray.length; i++) {
+                            table[i] = new Object();
+                            if (i < personArray.length) {
+                                table[i] = personArray[i];
+                                table[i].src = personArray[i].user_icon;
+                            }
+                            table[i].p_x = i % 20 + 1;
+                            table[i].p_y = Math.floor(i / 20) + 1;
+                        }
+                        init();
+                        animate();
+                    } else {
+                        alert(res.msg);
+                    }
+
+                }
+            })
+        }
+        // setInterval(function () {
+        //     getSignInfo();
+        // }, 1000);
+        function init() {
+
+            camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 10000);
+            // 球的大小
+            camera.position.z = 2600;
+
+            scene = new THREE.Scene();
+
+            // table
+
+            for (var i = 0; i < table.length; i++) {
+
+                var element = document.createElement('div');
+                element.className = 'element';
+                element.style.backgroundColor = 'rgba(0,127,127,' + (Math.random() * 0.5 + 0.25) + ')';
+
+                var img = document.createElement('img');
+                img.src = table[i].user_icon;
+                element.appendChild(img);
+
+                var object = new THREE.CSS3DObject(element);
+                object.position.x = Math.random() * 4000 - 1000;
+                object.position.y = Math.random() * 4000 - 1000;
+                object.position.z = Math.random() * 4000 - 1000;
+                scene.add(object);
+
+                objects.push(object);
+
+            }
+
+            // sphere
+
+            var vector = new THREE.Vector3();
+            var spherical = new THREE.Spherical();
+
+            for (var i = 0, l = objects.length; i < l; i++) {
+
+                var phi = Math.acos(-1 + (2 * i) / l);
+                var theta = Math.sqrt(l * Math.PI) * phi;
+
+                var object = new THREE.Object3D();
+
+                spherical.set(800, phi, theta);
+
+                object.position.setFromSpherical(spherical);
+
+                vector.copy(object.position).multiplyScalar(2);
+
+                object.lookAt(vector);
+
+                targets.sphere.push(object);
+
+            }
+
+            //渲染
+            renderer = new THREE.CSS3DRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight - 200);
+            renderer.domElement.style.position = 'absolute';
+            document.getElementById('container').appendChild(renderer.domElement);
+
+            // 鼠标控制
+            controls = new THREE.TrackballControls(camera, renderer.domElement);
+            controls.rotateSpeed = 0.5;
+            controls.minDistance = 500;
+            controls.maxDistance = 6000;
+            controls.addEventListener('change', render);
+
+            transform(targets.sphere, 2000);
+
+            //
+
+            window.addEventListener('resize', onWindowResize, false);
+
+        }
+
+        function transform(targets, duration) {
+
+            TWEEN.removeAll();
+
+            for (var i = 0; i < objects.length; i++) {
+
+                var object = objects[i];
+                var target = targets[i];
+
+                new TWEEN.Tween(object.position)
+                    .to({ x: target.position.x, y: target.position.y, z: target.position.z }, Math.random() * duration + duration)
+                    .easing(TWEEN.Easing.Exponential.InOut)
+                    .start();
+
+                new TWEEN.Tween(object.rotation)
+                    .to({ x: target.rotation.x, y: target.rotation.y, z: target.rotation.z }, Math.random() * duration + duration)
+                    .easing(TWEEN.Easing.Exponential.InOut)
+                    .start();
+
+            }
+
+            new TWEEN.Tween(this)
+                .to({}, duration * 2)
+                .onUpdate(render)
+                .start();
+
+        }
+
+        function onWindowResize() {
+
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            render();
+
+        }
+
+        function animate() {
+
+            // 让场景通过x轴或者y轴旋转  & z
+            // scene.rotation.x += 0.011;
+            scene.rotation.y += 0.002;
+
+            requestAnimationFrame(animate);
+
+            TWEEN.update();
+
+            controls.update();
+
+            // 渲染循环
+            render();
+
+        }
+
+        function render() {
+
+            renderer.render(scene, camera);
+
+        }
+
+    </script>
+</body>
+
+</html>

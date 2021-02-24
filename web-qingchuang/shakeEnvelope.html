@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>摇红包</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+        integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css"
+        integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/shakeEnvelope.css">
+    <link rel="stylesheet" href="css/hongbao.css">
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="./js/rem.js"></script>
+    <script src="./js/getApi.js"></script>
+</head>
+
+<body>
+    <div id="shakeEnvelope">
+        <div class="title">
+            <img src="./img/shakeEnvelope_title_bg.png" alt="" srcset="">
+        </div>
+        <div id="petalbox">
+        </div>
+        <div class="tiems_main">
+            <div class="tiems">
+                <div>
+                    <p class="tiems_num"></p>
+                    <p class="tiems_text">倒计时</p>
+                </div>
+            </div>
+        </div>
+        <div class="main">
+            <!-- 视频界面 -->
+            <div id="video">
+            </div>
+            <div class="goldCoin">
+                <img src="./img/shakeEnvelope_jin.png" alt="" srcset="">
+            </div>
+            <!-- <iframe src="./common/footer.html" style="width: 100%;height: 90px;position: fixed;bottom: 0;" frameborder="0" scrolling="no" name="headFrame"></iframe> -->
+        </div>
+        <div class="shakeEnvelope_text">请打开摇红包界面，摇动手机领取超大红包吧~</div>
+        <div class="footer_img"></div>
+        <div class="footerMain">
+            <div class="footer">
+                <div class="footerLeft">
+                    <a href="index.html" class="footerLeft_items idnexPage">
+                        <img src="./img/index.png" alt="" srcset="">
+                        <p>首页</p>
+                    </a>
+                    <a href="openingEnd.html" class="footerLeft_items openingEndPage">
+                        <img src="./img/prologue.png" alt="" srcset="">
+                        <p>开场白</p>
+                    </a>
+                    <a href="#" class="footerLeft_items">
+                        <img src="./img/countdown.png" alt="" srcset="">
+                        <p>倒计时</p>
+                    </a>
+                    <a href="signInWall.html" class="footerLeft_items signInWallPage is_sign_wall">
+                        <img src="./img/signInWall.png" alt="" srcset="">
+                        <p>签到墙</p>
+                    </a>
+                    <a href="guestShow.html" class="footerLeft_items goGuestShowPage is_show_guest">
+                        <img src="./img/guestShow.png" alt="" srcset="">
+                        <p>嘉宾展示</p>
+                    </a>
+                    <a href="messageWall.html" class="footerLeft_items messageWallPage is_message_wall">
+                        <img src="./img/messageWall.png" alt="" srcset="">
+                        <p>消息上墙</p>
+                    </a>
+                    <a href="programSelection.html" class="footerLeft_items programSelectionPage is_program_appraise">
+                        <img src="./img/programSelection.png" alt="" srcset="">
+                        <p>节目评选</p>
+                    </a>
+                    <a href="bigDraw.html" class="footerLeft_items bigDrawPage is_lottery">
+                        <img src="./img/bigDraw.png" alt="" srcset="">
+                        <p>大抽奖</p>
+                    </a>
+                    <a href="javascript:;" class="footerLeft_items shakeEnvelopePage is_red">
+                        <img src="./img/redEnvelope.png" alt="" srcset="">
+                        <p>摇红包</p>
+                    </a>
+                    <a href="programLink.html" class="footerLeft_items programLinkPage is_segment">
+                        <img src="./img/programLink.png" alt="" srcset="">
+                        <p>节目环节</p>
+                    </a>
+                    <a href="excellence.html" class="footerLeft_items excellencePage is_people_appraise">
+                        <img src="./img/excellence.png" alt="" srcset="">
+                        <p>评先评优</p>
+                    </a>
+                    <a href="openingEnd.html" class="footerLeft_items openingEndsPage">
+                        <img src="./img/peroration.png" alt="" srcset="">
+                        <p>结束语</p>
+                    </a>
+                </div>
+                <div class="footerRight">
+                    <a href="javascript:;" class="footerLeft_items" onclick="startMusic()">
+                        <img class="bigImg" src="./img/play.png" alt="" srcset="">
+                        <p class="bigText">开始</p>
+                    </a>
+                    <a href="javascript:;" class="footerLeft_items" onclick="setVoice()">
+                        <img src="./img/mute.png" alt="" srcset="">
+                        <img class="imgVoice" src="./img/icon_prohibit.png" alt="">
+                        <p>静音</p>
+                    </a>
+                    <a href="javascript:;" class="footerLeft_items" onclick="getBarrage()">
+                        <img src="./img/barrage.png" alt="" srcset="">
+                        <!-- <img class="imgProhibit" src="./img/icon_prohibit.png" alt=""> -->
+                        <p>弹幕</p>
+                    </a>
+                    <a href="javascript:;" class="footerLeft_items" onclick="fullScreen()">
+                        <img src="./img/fullScreen.png" alt="" srcset="">
+                        <p>全屏</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/hb.js"></script>
+    <script>
+        $('.footer').hide();
+        $('.footerMain').mouseover(function () {
+            $('.footer').show();
+        });
+        $('.footerMain').mouseout(function () {
+            $('.footer').hide();
+        });
+        var bgAudio = document.createElement('audio'); new Audio();
+        bgAudio.setAttribute("src", './music/水一 - 左手指月 (Cover：萨顶顶).mp3');
+        bgAudio.loop = false;
+
+        // audio.controls = true;
+        // audio.src = './music/水一 - 左手指月 (Cover：萨顶顶).mp3';
+        // document.body.appendChild(audio);
+        let flags = true;
+        function startMusic() {
+            if (flags) {
+                bgAudio.play();
+                bgAudio.volume = 0.3;
+                $('.bigImg').attr('src', './img/suspend.png');
+                $('.bigText').text('暂停');
+            } else {
+                bgAudio.pause();
+                // 播放
+                $('.bigImg').attr('src', './img/play.png')
+                $('.bigText').text('开始');
+            }
+            flags = !flags;
+        }
+        bgAudio.addEventListener('ended', function () {
+            $('.bigImg').attr('src', './img/play.png');
+            $('.bigText').text('开始');
+            flags = true;
+        }, false);
+        // 静音设置
+        function setVoice() {
+            if (bgAudio.volume > 0) {
+                bgAudio.volume = 0;
+                $('.imgVoice').css('display', 'block');
+            } else {
+                bgAudio.volume = 0.3;
+                $('.imgVoice').css('display', 'none');
+            }
+        }
+        let imgBarrage = true;
+        function getBarrage() {
+            $('#video').html('');
+            if (imgBarrage) {
+                $('#video').css('display', 'none');
+                clearInterval(times)
+            } else {
+                $('#video').css('display', 'block');
+                // getDanmu(redId, ageRed)
+                barrageTimes(redId);
+            }
+            imgBarrage = !imgBarrage;
+        }
+        function fullScreen() {
+            fullscreen()
+        }
+        var fullscreen = function () {
+            elem = document.body;
+            if (elem.webkitRequestFullScreen) {
+                elem.webkitRequestFullScreen();
+            } else if (elem.mozRequestFullScreen) {
+                elem.mozRequestFullScreen();
+            } else if (elem.requestFullScreen) {
+                elem.requestFullscreen();
+            } else {
+                alert("浏览器不支持全屏API或已被禁用")
+            }
+        }
+        //sArgName表示要获取哪个参数的值
+        var sHref = window.location.href;
+        //CuPlayer.com提示：测试数据
+        //实际情况是用window.location.href得到URL
+        var args = sHref.split("?");
+        // var activityIds = "";
+        // if (args[0] == sHref) /*参数为空*/ {
+        //     return activityId; /*CuPlayer.com提示：无需做任何处理*/
+        // }
+        var str = args[1];
+        var activityId = "";
+        // var userId = "";
+        // args = str.split("&");
+        for (var i = 0; i < args.length; i++) {
+            str = args[i];
+            var arg = str.split("=");
+            if (arg.length <= 1) continue;
+            if (arg[0] == 'activityId') activityId = arg[1];
+            // if (arg[0] == 'userId') userId = arg[1];
+        }
+        $('.idnexPage').attr('href', 'index.html?activityId=' + activityId);
+        $('.signInWallPage').attr('href', 'signInWall.html?activityId=' + activityId);
+        $('.goGuestShowPage').attr('href', 'guestShow.html?activityId=' + activityId);
+        $('.messageWallPage').attr('href', 'messageWall.html?activityId=' + activityId);
+        $('.programSelectionPage').attr('href', 'programSelection.html?activityId=' + activityId);
+        $('.shakeEnvelopePage').attr('href', 'startShakeEnvelope.html?activityId=' + activityId);
+        $('.bigDrawPage').attr('href', 'bigDraw.html?activityId=' + activityId);
+        $('.programLinkPage').attr('href', 'programLink.html?activityId=' + activityId);
+        $('.excellencePage').attr('href', 'excellence.html?activityId=' + activityId);
+        $('.openingEndPage').attr('href', 'openingEnd.html?activityId=' + activityId + '&id=1');
+        $('.openingEndsPage').attr('href', 'openingEnd.html?activityId=' + activityId + '&id=2');
+        ajax({
+            url: "screen/homePage", // url---->地址
+            type: "POST", // type ---> 请求方式
+            async: true, // async----> 同步：false，异步：true 
+            data: { activity_id: activityId },
+            success: function (res) { //返回接受信息
+                res = JSON.parse(res);
+                if (res.code == 0) {
+                    bgAudio.setAttribute("src", res.data.red_music);
+                    if (res.data.is_sign_wall == 2) {
+                        $('.is_sign_wall').css('display', 'none');
+                    }
+                    if (res.data.is_show_guest == 2) {
+                        $('.is_show_guest').css('display', 'none');
+                    }
+                    if (res.data.is_people_appraise == 2) {
+                        $('.is_people_appraise').css('display', 'none');
+                    }
+                    if (res.data.is_segment == 2) {
+                        $('.is_segment').css('display', 'none');
+                    }
+                    if (res.data.is_red == 2) {
+                        $('.is_red').css('display', 'none');
+                    }
+                    if (res.data.is_lottery == 2) {
+                        $('.is_lottery').css('display', 'none');
+                    }
+                    if (res.data.is_message_wall == 2) {
+                        $('.is_message_wall').css('display', 'none');
+                    }
+                    if (res.data.is_program_appraise == 2) {
+                        $('.is_program_appraise').css('display', 'none');
+                    }
+                } else {
+                    alert(res.msg);
+                }
+
+            }
+        })
+        var flag, redId, redNum;
+        ajax({
+            url: "screen/red", // url---->地址
+            type: "POST", // type ---> 请求方式
+            async: true, // async----> 同步：false，异步：true 
+            data: { activity_id: activityId },
+            success: function (res) { //返回接受信息
+                res = JSON.parse(res);
+                if (res.code == 0) {
+                    flag = res.data.red_chixu_time;
+                    redId = res.data.red_id;
+                    redNum = encodeURI(encodeURI(res.data.red_name));
+                    getRandomCode(res.data.red_id)
+                    barrageTimes(res.data.red_id)
+                } else {
+                    alert(res.msg);
+                }
+
+            }
+        })
+        var page = document.querySelector('#shakeEnvelope');
+        var tiems = document.querySelector('.tiems_main');
+        $(document).ready(function () {
+            page.style.height = $(window).height() + 'px';
+            tiems.style.top = ($(window).height() - tiems.style.height) / 200 - 2 + 'rem';
+            $(window).resize(function () {          //当浏览器大小变化时
+                page.style.height = $(window).height() + 'px';
+                tiems.style.top = ($(window).height() - tiems.style.height) / 200 - 2 + 'rem';
+            });
+            // tiems.style.left = ($(document).width() - tiems.style.width) / 200 - 2 + 'rem';
+            // page.style.width = $(document).width() + 'px';
+        })
+        var arrRedId = [];
+        function getDanmu(redId, arrId) {
+            ajax({
+                url: "screen/redDetail", // url---->地址
+                type: "POST", // type ---> 请求方式
+                async: true, // async----> 同步：false，异步：true 
+                data: { red_id: redId, old_id: arrId },
+                success: function (res) { //返回接受信息
+                    res = JSON.parse(res);
+                    if (res.code == 0) {
+                        res.data.forEach(item => {
+                            arrRedId.push(item.red_detail_id)
+                            let content = '祝贺' + item.user_name + '抢到红包' + item.money + '元~'
+                            createBarrage(content, item.user_icon);
+                        });
+                    } else {
+                        alert(res.msg);
+                    }
+
+                }
+            })
+        }
+        // 创建一个弹幕
+        function createBarrage(content, url) {
+            // var d1 = document.getElementById("d1");
+            var box = document.createElement("div");
+            var box1 = document.createElement("div");
+            var imgBox = document.createElement("div");
+            var img = document.createElement("img");
+            var barrage = document.createElement("span");
+            img.src = url;
+            box.appendChild(box1);
+            box1.appendChild(imgBox);
+            box1.append(barrage);
+            imgBox.appendChild(img);
+            box1.style.display = "flex";
+            box1.style.alignItems = "center";
+            box1.style.position = "relative";
+            // box.style.display = "inline-block";
+            box.style.top = randomNum(0.2, 4) + 'rem';
+
+            box.className = "box";
+
+            imgBox.style.width = 0.98 + 'rem';
+            imgBox.style.height = 0.98 + 'rem';
+            imgBox.style.borderRadius = '50%';
+            imgBox.style.position = "absolute";
+            imgBox.style.left = 0;
+            imgBox.style.top = -0.17 + 'rem';
+            imgBox.style.borderWidth = 0.02 + 'rem';
+            imgBox.style.borderStyle = 'solid';
+            imgBox.style.borderColor = randomColor();
+            imgBox.style.display = "flex";
+            imgBox.style.justifyContent = "center";
+            imgBox.style.alignItems = "center";
+
+            img.style.width = 0.96 + 'rem';
+            img.style.height = 0.96 + 'rem';
+            img.style.borderRadius = '50%';
+
+            barrage.style.display = 'inline-block';
+            barrage.style.lineHeight = 0.62 + 'rem';
+            barrage.style.fontSize = 0.24 + 'rem';
+            barrage.style.fontFamily = 'Microsoft YaHei';
+            barrage.style.fontWeight = 400;
+            barrage.style.background = 'rgba(255,255,255,0.9)';
+            barrage.style.borderWidth = 0.02 + 'rem';
+            barrage.style.borderStyle = 'solid';
+            barrage.style.borderColor = imgBox.style.borderColor;
+            barrage.style.color = imgBox.style.borderColor;
+            barrage.style.borderRadius = 0.31 + 'rem';
+            barrage.style.paddingLeft = 1.2 + 'rem';
+            barrage.style.paddingRight = 0.3 + 'rem';
+            barrage.style.whiteSpace = 'nowrap';
+
+
+            //创建一个span
+            // var barrage = document.createElement("span");
+            //定义内容
+            barrage.innerText = content;
+            //指定class
+            // barrage.className = "barrage";
+            //为弹幕设置一个随机的高度
+            // barrage.style.top = randomNum(10, 300) + 'px';
+            //宽度
+            box.style.width = (content.length * 24 + 150) / 100 + 'rem';
+            //为弹幕设置一个随机的颜色
+            // barrage.style.color = randomColor();
+            //加入video中
+            document.getElementById("video").appendChild(box);
+
+            //开始滚动
+            rolling(box)
+        }
+
+        //取随机数
+        function randomNum(minNum, maxNum) {
+            return parseFloat(Math.random() * (maxNum - minNum + 1) + minNum, 10);
+        }
+
+        //取随机颜色
+        function randomColor() {
+            var color = "#";
+            for (var i = 0; i < 6; i++) {
+                color += (Math.random() * 16 | 0).toString(16);
+            }
+            return color;
+        }
+
+        //滚动弹幕
+        function rolling(object) {
+
+            //启动一个定时器，每10秒执行一次
+            var a = setInterval(function () {
+                //判断是否滚动出屏幕
+                //取左边距，如果弹幕的最后一个字符的左边距大于0，则一直执行自减操作，通过上边的css，我们知道每个字符的大小为16px
+                if (object.offsetLeft > -object.innerHTML.length) {
+                    object.style.left = object.offsetLeft - 1 + 'px';
+                } else {
+                    //如果弹幕已移出屏幕，则删除本条弹幕
+                    object.parentNode.removeChild(object);
+                    //清理定时器
+                    clearInterval(a);
+                }
+            }, 10);
+        }
+        var tiems_num = document.querySelector('.tiems_num');
+        var ageRed = '';
+        function getRandomCode(resIds) {
+            if (flag == 0) {
+                ajax({
+                    url: "screen/endRed", // url---->地址
+                    type: "POST", // type ---> 请求方式
+                    async: true, // async----> 同步：false，异步：true 
+                    data: { red_id: redId },
+                    success: function (res) { //返回接受信息
+                        res = JSON.parse(res);
+                        if (res.code == 0) {
+                            $(window).attr('location', "endShakeEnvelope.html?activityId=" + activityId + "&redId=" + redId + "&redNum=" + redNum);
+                        } else {
+                            alert(res.msg);
+                        }
+
+                    }
+                })
+                // return;
+            } else {
+                flag--;
+                tiems_num.innerHTML = flag + 's';
+                setTimeout(function () {
+                    getRandomCode(resIds);
+                }, 1000);
+            }
+        }
+        var times;
+        function barrageTimes(redId) {
+            times = setInterval(function () {
+                if (arrRedId.length <= 0) {
+                    ageRed = '';
+                } else {
+                    ageRed = arrRedId.join(',')
+                }
+                console.log(ageRed)
+                getDanmu(redId, ageRed);
+            }, 3000);
+        }
+    </script>
+</body>
+
+</html>

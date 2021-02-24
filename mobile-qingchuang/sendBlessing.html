@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>送祝福</title>
+    <link rel="stylesheet" href="./mobileCss/sendBlessing.css">
+    <script src="./mobileJs/rem.js"></script>
+    <script src="./mobileJs/jquery-3.4.1.min.js"></script>
+    <script src="./mobileJs/getApi.js"></script>
+    <script src="./layer/layer.js"></script>
+    <link href="http://cdn.staticfile.org/emoji/0.2.2/emoji.css" rel="stylesheet" type="text/css" />
+    <script src="http://cdn.staticfile.org/emoji/0.2.2/emoji.js"></script>
+</head>
+
+<body>
+    <div id="sendBlessing">
+        <div class="title">
+            <img id="goback" src="./mobileImg/icon_back.png" alt="" srcset="">
+            <div class="title_text">祝福</div>
+            <div style="width: 0.36rem;"></div>
+        </div>
+        <div class="main">
+        </div>
+        <div class="footer">
+            <input class="sendText" type="text">
+            <!-- <img class="getEmoji" src="./mobileImg/icon_img.png" alt="" srcset=""> -->
+            <button class="send" disabled="disabled">发送</button>
+        </div>
+    </div>
+</body>
+<script>
+    //sArgName表示要获取哪个参数的值
+    var sHref = window.location.href;
+    //CuPlayer.com提示：测试数据
+    //实际情况是用window.location.href得到URL
+    var args = sHref.split("?");
+    // var activityIds = "";
+    // if (args[0] == sHref) /*参数为空*/ {
+    //     return activityId; /*CuPlayer.com提示：无需做任何处理*/
+    // }
+    var str = args[1];
+    var activityId = "";
+    var userId = "";
+    args = str.split("&");
+    for (var i = 0; i < args.length; i++) {
+        str = args[i];
+        var arg = str.split("=");
+        if (arg.length <= 1) continue;
+        if (arg[0] == 'activityId') activityId = arg[1];
+        if (arg[0] == 'userId') userId = arg[1];
+    }
+    $('.main').css('height', window.innerHeight + 'px');
+    $('#goback').click(function () {
+        history.back(-1)
+    })
+    $('.sendText').on('input', function () {
+        if ($(this).val() == '') {
+            $('.send').attr("disabled", true);
+        } else {
+            $('.send').attr("disabled", false);
+        }
+    })
+    $('.send').click(function () {
+        var text = $('.sendText');
+        // console.log(jEmoji.unifiedToHTML(text.val()))
+        getSendInfo(activityId, userId, text.val());
+        // getSendInfo(activityId, userId, jEmoji.unifiedToHTML(text.val()));
+    })
+    document.body.addEventListener('focusin', () => {
+        // 软键盘弹出的事件处理
+        this.isReset = false
+    })
+    document.body.addEventListener('focusout', () => {
+        // 软键盘收起的事件处理
+        this.isReset = true
+        setTimeout(() => {
+            // 当焦点在弹出层的输入框之间切换时先不归位
+            if (this.isReset) {
+                window.scroll(0, 0) // 失焦后强制让页面归位
+            }
+        }, 300)
+    })
+    function getMsgList(activityId, userId) {
+        ajax({
+            url: "activity/messageList", // url---->地址
+            type: "POST", // type ---> 请求方式
+            async: true, // async----> 同步：false，异步：true 
+            data: { activity_id: activityId, user_id: userId },
+            success: function (res) { //返回接受信息
+                res = JSON.parse(res);
+                if (res.code == 0) {
+                    let $main = $('<div></div>')
+                    res.data.forEach((item, i) => {
+                        if (item.user_id == userId) {
+                            let str = $("<div class='list_item'><div><div class='list_item_name'>" + item.user_name + "</div><div class='list_item_text'>" + item.content + "</div></div><img src=" + item.user_icon + "></div>");
+                            $main.append(str);
+                        } else {
+                            let str = $("<div class='list_items'><img src=" + item.user_icon + "><div><div class='list_item_name'>" + item.user_name + "</div><div class='list_item_text'>" + item.content + "</div></div></div>");
+                            $main.append(str);
+                        }
+
+                    });
+                    $('.main').html($main);
+                    // $('.main').scrollTop($('.main')[0].scrollHeight);
+                    var h = $('.main>div').height() - $('.main').height() + 40;
+                    $('.main').scrollTop(h);
+                } else {
+                    layer.msg(res.msg, {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    });
+                }
+
+            }
+        })
+    }
+    function getSendInfo(activityId, userId, val) {
+        ajax({
+            url: "activity/sendMessage", // url---->地址
+            type: "POST", // type ---> 请求方式
+            async: true, // async----> 同步：false，异步：true 
+            data: { activity_id: activityId, user_id: userId, content: val },
+            success: function (res) { //返回接受信息
+                res = JSON.parse(res);
+                if (res.code == 0) {
+                    getMsgList(activityId, userId);
+                    $('.sendText').val('');
+                    $('.send').attr("disabled", true);
+                } else {
+                    layer.msg(res.msg, {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    });
+                }
+
+            }
+        })
+    }
+    getMsgList(activityId, userId);
+
+</script>
+
+</html>

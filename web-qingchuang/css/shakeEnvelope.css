@@ -1,0 +1,207 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+a {
+    text-decoration: none !important;
+}
+#shakeEnvelope {
+    /* width: 100%; */
+    min-width: 14.2rem;
+    height: 100%;
+    padding-top: 0.6rem;
+    background: url('../img/shakeEnvelope_bg.png') no-repeat center center;
+    background-size: 100% 100%;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.title {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.title img {
+    width: 2.52rem;
+    height: 0.63rem;
+}
+
+/* 视频部分 */
+#video {
+    /* 设置宽高 */
+    width: 100%;
+    height: 6rem;
+
+    /* 设置背景颜色 */
+    /* background: #595959; */
+
+    /* 设置为 居中 */
+    /* margin: 0 auto; */
+
+    /* 设置阴影 */
+    /* box-shadow: 2px 2px 5px #333; */
+
+    /* 设置为 相对定位 */
+    position: relative;
+
+    /* 设置里面的文字大小 */
+    font-size: 0.16rem;
+
+    /* 隐藏溢出 */
+    overflow: hidden;
+}
+
+
+/* 发送框和发送按钮 */
+#send {
+    width: 4rem;
+    margin: 0 auto;
+    margin-top: 0.3rem;
+}
+
+/* 弹幕 */
+.box {
+    z-index: 2;
+
+    /*  设置为 绝对定位 */
+
+    position: absolute;
+
+    /* 设置为 块级元素 */
+    /* display: block; */
+
+    /* 设置左边距 使弹幕初始位置在视频部分之外 */
+    left: 100%;
+}
+
+.main {
+    z-index: 2;
+}
+.tiems_main{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+}
+.tiems {
+    width: 3.36rem;
+    height: 3.36rem;
+    background: rgba(255, 255, 255, .1);
+    /* opacity: 0.1; */
+    border-radius: 50%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 0;
+}
+
+.tiems_num {
+    font-size: 1rem;
+    font-family: 'Microsoft YaHei';
+    font-weight: bold;
+    color: rgba(255, 255, 255, 1);
+}
+
+.tiems_text {
+    font-size: 0.4rem;
+    font-family: 'Microsoft YaHei';
+    font-weight: bold;
+    color: rgba(255, 255, 255, 1);
+}
+
+.shakeEnvelope_text {
+    width: 100%;
+    text-align: center;
+    font-size: 0.34rem;
+    font-family: 'Microsoft YaHei';
+    font-weight: bold;
+    color: rgba(255, 255, 255, 1);
+    position: fixed;
+    bottom: 2.2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.goldCoin {
+    width: 100%;
+    height: 2.3rem;
+    position: absolute;
+    bottom: 0.9rem;
+    display: flex;
+    justify-content: center;
+}
+
+.goldCoin img {
+    width: 4.3rem;
+    height: 2.3rem;
+}
+
+.footer_img {
+    width: 100%;
+    height: 2rem;
+    position: fixed;
+    bottom: 0;
+    background: url('../img/shakeEnvelope_bottom.png') no-repeat center center;
+    background-size: 100% 100%;
+    z-index: 5;
+}
+
+.footerMain{
+    width: 100%;
+    height: 0.9rem;
+    background:rgba(0,0,0,0.1);
+    position: fixed;
+    bottom: 0;
+    z-index: 8;
+}
+.footer{
+    width: 100%;
+    height: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.footer img{
+    width: 0.42rem;
+    height: 0.42rem;
+}
+.footerLeft,.footerRight{
+    display: flex;
+    align-items: center;
+}
+.footerLeft_items{
+    text-align: center;
+    margin: 0 0.18rem;
+    text-decoration: none;
+    display: block;
+    position: relative;
+}
+.footerLeft_items:hover{
+    text-decoration: none;
+}
+.footerLeft_items:first-child{
+    margin-left: 0.4rem;
+}
+.footerLeft_items p{
+    margin: 0;
+    margin-top: 0.08rem;
+    font-size:0.12rem;
+    font-family:'Microsoft YaHei';
+    font-weight:400;
+    color:#fff;
+}
+.footerRight:last-child{
+    margin-right: 0.2rem;
+}
+.footer .imgProhibit,.footer .imgVoice{
+    width: 0.16rem;
+    height: 0.16rem;
+    position: absolute;
+    top: 0.24rem;
+    left: 0.13rem;
+}
+.imgVoice{
+    display: none;
+}

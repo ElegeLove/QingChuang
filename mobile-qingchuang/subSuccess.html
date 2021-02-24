@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>提交成功</title>
+    <link rel="stylesheet" href="./mobileCss/subSuccess.css">
+    <script src="./mobileJs/jquery-3.4.1.min.js"></script>
+    <script src="./mobileJs/rem.js"></script>
+</head>
+
+<body>
+    <div id="subSuccess">
+        <div class="title">
+            <img id="goback" src="./mobileImg/icon_back.png" alt="" srcset="">
+            <div class="title_text">提交成功</div>
+            <img id="share" src="./mobileImg/icon_null.png" alt="" srcset="">
+        </div>
+        <div class="main">
+            <div class="main_box">
+                <div class="main_box_center">
+                    <img src="./mobileImg/icon_result_success.png" alt="" srcset="">
+                    <div>您已提交了问卷调查</div>
+                </div>
+            </div>
+            <div class="main_footer">
+                <div class="main_footer_btn">返回</div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    $('#goback').click(function () {
+        // $(window).attr('location', "eventRegistration.html?id=1&state=2")
+        history.go(-2)
+    })
+    $('.main_footer_btn').click(function () {
+        // $(window).attr('location', "eventRegistration.html?id=1&state=2")
+        history.go(-2)
+    })
+</script>
+
+</html>

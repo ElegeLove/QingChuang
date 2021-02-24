@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>提示</title>
+    <link rel="stylesheet" href="./mobileCss/scanTips.css">
+    <script src="./mobileJs/jquery-3.4.1.min.js"></script>
+    <script src="./mobileJs/rem.js"></script>
+</head>
+
+<body>
+    <div id="bigActivity">
+        <div class="title">
+            <img id="goback" src="./mobileImg/icon_back.png" alt="" srcset="">
+            <div class="title_text">提示</div>
+            <div></div>
+        </div>
+        <div class="main">
+            <div>
+                <h2 class="main_title">如需游览，请长按网址复制后使用游览器访问</h2>
+                <p class="main_text">http://www.baidu.com</p>
+                <p class="main_tips">长按复制</p>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    // console.log($('.main_state'))
+    // for(let item in $('.main_state')){
+    //     console.log(item)
+    // }
+
+    // $(window).attr('location',"index.html");
+    $('#goback').click(function () {
+        location.href = 'https://www.js_tipsback.com';
+    })
+
+</script>
+
+</html>

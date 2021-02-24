@@ -1,0 +1,174 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    background-color: #000000;
+    margin: 0;
+    font-family: Helvetica, sans-serif;
+    ;
+    overflow: hidden;
+}
+a {
+    text-decoration: none !important;
+}
+.signInWall {
+    /* width: 100%; */
+    min-width: 14.2rem;
+    height: 100%;
+    padding-top: 0.6rem;
+    background-image: url('../img/signInWall_bg.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 100% 100%;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.title {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.title_text {
+    width: 9.07rem;
+    /* height: 0.64rem; */
+    font-size: 0.36rem;
+    text-align: center;
+    font-weight: bold;
+    background: url('../img/text_bg.jpg') no-repeat;
+    background-origin: border-box;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+/* .title img {
+    width: 13.88rem;
+    height: 0.9rem;
+
+
+    padding: 0;
+    margin: 0;
+    font-size: 0.6rem;
+    font-family: "Microsoft YaHei";
+    font-weight: bold;
+    color: rgba(242, 213, 146, 1);
+    text-shadow: 0.05rem 0.05rem 0px rgba(181, 160, 16, 0.53);
+} */
+
+.main {
+    width: 100%;
+    margin-top: 0.6rem;
+    display: flex;
+    justify-content: center;
+}
+
+.element {
+    width: 1rem;
+    /* 120 160 */
+    height: 1rem;
+    box-shadow: 0px 0px 0.12rem rgba(0, 255, 255, 0.5);
+    border: 0.01rem solid rgba(127, 255, 255, 0.25);
+    text-align: center;
+    cursor: default;
+}
+
+.element:hover {
+    box-shadow: 0px 0px 0.12rem rgba(0, 255, 255, 0.75);
+    border: 0.01rem solid rgba(127, 255, 255, 0.75);
+}
+
+.element img {
+    width: 1rem;
+    height: 1rem;
+}
+
+.element .number {
+    position: absolute;
+    top: 0.2rem;
+    right: 0.2rem;
+    font-size: 0.12rem;
+    color: rgba(127, 255, 255, 0.75);
+}
+
+.element .symbol {
+    position: absolute;
+    top: 0.4rem;
+    left: 0px;
+    right: 0px;
+    font-size: 0.6rem;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.75);
+    text-shadow: 0 0 0.1rem rgba(0, 255, 255, 0.95);
+}
+
+.element .details {
+    position: absolute;
+    bottom: 0.15rem;
+    left: 0px;
+    right: 0px;
+    font-size: 0.12rem;
+    color: rgba(127, 255, 255, 0.75);
+}
+
+.footerMain{
+    width: 100%;
+    height: 0.9rem;
+    background:rgba(0,0,0,0.1);
+    position: fixed;
+    bottom: 0;
+}
+.footer{
+    width: 100%;
+    height: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.footer img{
+    width: 0.42rem;
+    height: 0.42rem;
+}
+.footerLeft,.footerRight{
+    display: flex;
+    align-items: center;
+}
+.footerLeft_items{
+    text-align: center;
+    margin: 0 0.18rem;
+    text-decoration: none;
+    display: block;
+    position: relative;
+}
+.footerLeft_items:hover{
+    text-decoration: none;
+}
+.footerLeft_items:first-child{
+    margin-left: 0.4rem;
+}
+.footerLeft_items p{
+    margin: 0;
+    margin-top: 0.08rem;
+    font-size:0.12rem;
+    font-family:'Microsoft YaHei';
+    font-weight:400;
+    color:#fff;
+}
+.footerRight:last-child{
+    margin-right: 0.2rem;
+}
+.footer .imgProhibit,.footer .imgVoice{
+    width: 0.16rem;
+    height: 0.16rem;
+    position: absolute;
+    top: 0.24rem;
+    left: 0.13rem;
+}
+.imgVoice{
+    display: none;
+}

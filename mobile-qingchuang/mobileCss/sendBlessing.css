@@ -1,0 +1,151 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#sendBlessing {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.title {
+    width: 100%;
+    height: 0.88rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 0.24rem;
+    background: #fff;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    z-index: 1;
+}
+
+.title img {
+    width: 0.36rem;
+    height: 0.36rem;
+}
+
+.title_text {
+    font-size: 0.32rem;
+    font-family: 'PingFangSC-Medium,PingFang SC';
+    font-weight: 500;
+    color: #000;
+    line-height: 0.48rem;
+}
+
+.main {
+    width: 100%;
+    padding: 0.8rem 0;
+    overflow-y: auto;
+    background: rgba(250,250,250,1);
+    -webkit-overflow-scrolling: touch;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.list_item,
+.list_items {
+    box-sizing: border-box;
+    font-size: 0.28rem;
+    font-family: 'PingFangSC-Regular, PingFang SC';
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.8);
+    line-height: 0.44rem;
+    padding: 0 0.24rem;
+    margin: 0.24rem 0;
+}
+
+.list_item {
+    display: flex;
+    justify-content: flex-end;
+    /* align-items: center; */
+}
+
+.list_items {
+    display: flex;
+    /* align-items: center; */
+}
+
+.list_item .list_item_name {
+    text-align: right;
+}
+
+.list_items .list_item_name {
+    text-align: left;
+}
+
+.list_item_name {
+    font-size: 0.2rem;
+}
+
+.list_item_text {
+    width: 4.93rem;
+    padding: 0.16rem;
+    box-sizing: border-box;
+    text-align: left;
+    background: #FACA2B;
+    border-radius: 0.24rem 0 0.24rem 0.24rem;
+    font-size: 0.28rem;
+    font-family: 'PingFangSC-Regular,PingFang SC';
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.8);
+    line-height: 0.44rem;
+}
+
+.list_items .list_item_text {
+    border-radius: 0 0.24rem 0.24rem 0.24rem;
+}
+
+.list_item img,
+.list_items img {
+    width: 0.88rem;
+    height: 0.88rem;
+    border-radius: 50%;
+}
+
+.list_item img {
+    margin-left: 0.16rem;
+}
+
+.list_items img {
+    margin-right: 0.16rem;
+}
+
+.footer {
+    width: 100%;
+    padding: 0.12rem 0;
+    position: fixed;
+    bottom: 0;
+    background: #fff;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.footer img {
+    width: 0.48rem;
+    height: 0.48rem;
+}
+
+.sendText {
+    width: 4.38rem;
+    height: 0.72rem;
+    background: rgba(0, 0, 0, 0.04);
+    border-radius: 0.36rem;
+    padding: 0 0.2rem;
+    box-sizing: border-box;
+    outline-style: none;
+    border: none;
+}
+
+.send {
+    width: 1.36rem;
+    height: 0.64rem;
+    background: rgba(250, 202, 43, 1);
+    border-radius: 0.44rem;
+    outline-style: none;
+    border: none;
+}

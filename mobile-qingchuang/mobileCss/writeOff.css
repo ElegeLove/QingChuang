@@ -1,0 +1,40 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#hostWord {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.title {
+    width: 100%;
+    height: 0.88rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 0.24rem;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0.2rem;
+    z-index: 2;
+}
+
+.title img {
+    width: 0.36rem;
+    height: 0.36rem;
+}
+
+.title_text {
+    font-size: 0.32rem;
+    font-family: 'PingFangSC-Medium,PingFang SC';
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.85);
+    line-height: 0.48rem;
+}
+.ovfHiden {
+    overflow: hidden;
+    height: 100%;
+}

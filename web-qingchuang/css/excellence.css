@@ -1,0 +1,250 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+ul {
+    list-style: none;
+}
+
+.excellence {
+    /* width: 100%; */
+    /* min-width: 1420px; */
+    /* min-width: 14.2rem; */
+    height: 100%;
+    padding-top: 0.5rem;
+    background: url('../img/excellence_bg.png') no-repeat center center;
+    background-size: 100% 100%;
+    /* background-size: cover; */
+    box-sizing: border-box;
+    position: relative;
+}
+
+.title {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.title img {
+    width: 2.52rem;
+    height: 0.63rem;
+}
+
+.main {
+    width: 100%;
+    margin-top: 0.5rem;
+    display: flex;
+    justify-content: center;
+}
+
+.main_info {
+    width: 13.72rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* position: relative; */
+}
+
+.main_info .list {
+    width: 11.55rem;
+    padding: 0.3rem 0;
+    box-sizing: border-box;
+    display: flex;
+    /* overflow-x: hidden; */
+}
+
+.left,
+.right {
+    width: 0.42rem;
+    height: 0.7rem;
+    cursor: pointer;
+}
+
+/* .left {
+    position: absolute;
+    top: 302px;
+    left: 0;
+}
+
+.right {
+    position: absolute;
+    top: 302px;
+    right: 0;
+} */
+.list {
+    width: 11.55rem;
+    height: 7.5rem;
+    background: url('../img/excellence_kuang.png') no-repeat center center;
+    /* background-size: cover; */
+    background-size: 100% 100%;
+}
+
+.items {
+    width: 11.5rem;
+    height: 7.5rem;
+    /* overflow-y: scroll; */
+    
+    padding: 0.8rem 0.8rem 0.3rem;
+    box-sizing: border-box;
+    display: none;
+    position: relative;
+}
+::-webkit-scrollbar{width:0.1rem;}
+::-webkit-scrollbar-track {
+    background-color: #280631;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgb(250, 190, 73)
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(250, 190, 73)
+}
+
+::-webkit-scrollbar-thumb:active {
+    background-color: rgb(250, 190, 73)
+}
+.list_title {
+    width: 2.62rem;
+    height: 0.31rem;
+    font-size: 0.3rem;
+    font-family: 'Microsoft YaHei';
+    font-weight: bold;
+    color: rgba(245, 223, 107, 1);
+    line-height: 0.51rem;
+    position: absolute;
+    top: 0.2rem;
+    left: 4.46rem;
+    box-sizing: border-box;
+    text-shadow: 0rem 0rem 0.5rem rgb(236, 235, 228);
+    text-align: center;
+}
+
+.list_child {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.list_child li {
+    /* border-radius: 50%; */
+    margin: 0 0.45rem 0.1rem;
+}
+
+.child_items {
+    width: 1.52rem;
+    height: 1.96rem;
+    background: url('../img/excellence_user_kuang.png') no-repeat center center;
+    background-size: 100% 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 0.3rem rgba(181, 160, 16, 0.53);
+
+}
+
+.list_child li p {
+    font-size: 0.26rem;
+    font-family: 'Microsoft YaHei';
+    font-weight: 400;
+    color: rgba(247, 207, 106, 1);
+    line-height: 0.5rem;
+    text-align: center;
+}
+
+.list_child li img {
+    width: 1.42rem;
+    height: 1.84rem;
+    /* border-radius: 50%; */
+}
+.pageBox{
+    width: 9.5rem;
+    height: 0.7rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: 0.5rem;
+}
+.pageList{
+    display: flex;
+}
+.pageList img{
+    width: 1.49rem;
+    height: 0.69rem;
+    cursor: pointer;
+    margin: 0 0.2rem;
+}
+.footerMain {
+    width: 100%;
+    height: 0.9rem;
+    background: rgba(0, 0, 0, 0.1);
+    position: fixed;
+    bottom: 0;
+}
+
+.footer {
+    width: 100%;
+    height: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer img {
+    width: 0.42rem;
+    height: 0.42rem;
+}
+
+.footerLeft,
+.footerRight {
+    display: flex;
+    align-items: center;
+}
+
+.footerLeft_items {
+    text-align: center;
+    margin: 0 0.18rem;
+    text-decoration: none;
+    display: block;
+    position: relative;
+}
+
+.footerLeft_items:hover {
+    text-decoration: none;
+}
+
+.footerLeft_items:first-child {
+    margin-left: 0.4rem;
+}
+
+.footerLeft_items p {
+    margin: 0;
+    margin-top: 0.08rem;
+    font-size: 0.12rem;
+    font-family: 'Microsoft YaHei';
+    font-weight: 400;
+    color: #fff;
+}
+
+.footerRight:last-child {
+    margin-right: 0.2rem;
+}
+
+.footer .imgProhibit,
+.footer .imgVoice {
+    width: 0.16rem;
+    height: 0.16rem;
+    position: absolute;
+    top: 0.24rem;
+    left: 0.13rem;
+}
+
+.imgVoice {
+    display: none;
+}

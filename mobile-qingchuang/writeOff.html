@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>扫码核销</title>
+    <link rel="stylesheet" href="./mobileCss/writeOff.css">
+    <script src="./mobileJs/jquery-3.4.1.min.js"></script>
+    <script src="./mobileJs/rem.js"></script>
+    <script src="./mobileJs/getApi.js"></script>
+    <script src="./layer/layer.js"></script>
+</head>
+
+<body>
+    <!-- <div>扫码核销</div> -->
+    <div id="hostWord">
+        <div class="title">
+            <img id="goback" src="./mobileImg/icon_back.png" alt="" srcset="">
+            <div class="title_text">扫码核销</div>
+            <div></div>
+        </div>
+        <!-- <div style="margin-top: 60px;">12312121</div> -->
+    </div>
+</body>
+<script>
+    $('#goback').click(function () {
+        // location.href = 'https://www.js_goback.com';
+        // history.back(-1);
+        document.addEventListener('WeixinJSBridgeReady', function () { WeixinJSBridge.call('closeWindow'); }, false);
+        WeixinJSBridge.call('closeWindow');
+    })
+    var sHref = window.location.href;
+    // layer.open({
+    //     type: 1,
+    //     title: '提示',
+    //     content: sHref,
+    //     btn: ['确定'],
+    //     scrollbar: false,
+    //     shadeClose: true,
+    //     btn1: function (index) {
+    //         // $('html,body').removeClass('ovfHiden');
+    //         // window.location.href = "https://www.baidu.com";
+    //         // window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx58285919960eab1a&redirect_uri=https%3A%2F%2Fqingchuang.mx5918.com%2FwriteOff.html&response_type=code&scope=snsapi_base&state=" + activityId + "#wechat_redirect";
+    //         window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx58285919960eab1a&redirect_uri=Https%3a%2f%2fqingchuang.mx5918.com%2fwriteOff.html&response_type=code&scope=snsapi_base&state=" + activityId + "#wechat_redirect";
+    //         // $(window).attr('location', "");
+    //         // history.back(-1);
+    //         // layer.close(index);
+    //     },
+    // });
+    var activetyId = "";
+    var check_user_id = "";
+    var args = sHref.split("?");
+    var str = args[1];
+    var userId = '';
+    // localStorage.removeItem("userIdss");
+    // localStorage.removeItem("activity_ids");
+    // localStorage.removeItem("user_ids");
+    // localStorage.removeItem("user_id");
+    // localStorage.removeItem("userId");
+    // localStorage.removeItem("activityId");
+    if (sHref.indexOf("state") != -1) {
+        // if (localStorage.getItem("userIdss")) {
+        //     getCheckCode(localStorage.getItem("userIdss"), localStorage.getItem("activity_ids"), localStorage.getItem("user_ids"))
+        // } else {
+            args = str.split("&");
+            for (let i = 0; i < args.length; i++) {
+                str = args[i];
+                let arg = str.split("=");
+                if (arg.length <= 1) continue;
+                if (arg[0] == 'code') code = arg[1];
+                if (arg[0] == 'state') activetyId = arg[1];
+            }
+            let arrs = activetyId.split("+")
+            localStorage.setItem("user_ids", arrs[0]);
+            localStorage.setItem("activity_ids", arrs[1]);
+            ajax({
+                url: "activity/wechat", // url---->地址
+                type: "POST", // type ---> 请求方式
+                async: true, // async----> 同步：false，异步：true 
+                data: { code: code, activity_id: activetyId },
+                success: function (res) { //返回接受信息
+                    res = JSON.parse(res);
+                    if (res.code == 0) {
+                        // userId = res.data.user_id;
+                        localStorage.setItem("userIdss", res.data.user_id);
+                        getCheckCode(res.data.user_id, localStorage.getItem("activity_ids"), localStorage.getItem("user_ids"))
+                    }
+                },
+                error: function (res) {
+                    layer.msg(res.msg, {
+                        icon: 2,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    });
+                }
+            })
+        // }
+    } else {
+        args = str.split("&");
+        for (let i = 0; i < args.length; i++) {
+            str = args[i];
+            let arg = str.split("=");
+            if (arg.length <= 1) continue;
+            if (arg[0] == 'user_id') userId = arg[1];
+            if (arg[0] == 'activity_id') activetyId = arg[1];
+        }
+        let obj = userId + '+' + activetyId;
+        $(window).attr('location', "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx58285919960eab1a&redirect_uri=Https%3a%2f%2fqingchuang.mx5918.com%2fwriteOff.html&response_type=code&scope=snsapi_base&state=" + obj + "#wechat_redirect");
+        // apiInfo(activityId, userId);
+    }
+
+
+
+
+    function getCheckCode(check_user_id, activetyIdss, userIdss) {
+        ajax({
+            url: "activity/checkCode", // url---->地址
+            type: "POST", // type ---> 请求方式
+            async: true, // async----> 同步：false，异步：true 
+            data: { check_user_id: check_user_id, activity_id: activetyIdss, user_id: userIdss },
+            success: function (res) { //返回接受信息
+                res = JSON.parse(res);
+                if (res.code == 0) {
+                    layer.open({
+                        type: 1,
+                        title: '提示',
+                        content: res.msg,
+                        btn: ['确定'],
+                        scrollbar: false,
+                        shadeClose: true,
+                        btn1: function (index) {
+                            // $('html,body').removeClass('ovfHiden');
+                            // history.back(-2);
+                            document.addEventListener('WeixinJSBridgeReady', function () { WeixinJSBridge.call('closeWindow'); }, false);
+                            WeixinJSBridge.call('closeWindow');
+                            layer.close(index);
+                        },
+                    });
+                } else {
+                    layer.open({
+                        type: 1,
+                        title: '提示',
+                        content: res.msg,
+                        btn: ['确定'],
+                        scrollbar: false,
+                        shadeClose: true,
+                        btn1: function (index) {
+                            // $('html,body').removeClass('ovfHiden');
+                            WeixinJSBridge.call('closeWindow');
+                            document.addEventListener('WeixinJSBridgeReady', function () { WeixinJSBridge.call('closeWindow'); }, false);
+                            // history.back(-2);
+                            layer.close(index);
+                        },
+                    });
+                }
+
+            }
+        })
+    }
+    // let uId = 76;
+
+</script>
+
+</html>

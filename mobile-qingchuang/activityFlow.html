@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>活动流程</title>
+    <link rel="stylesheet" href="./mobileCss/activityFlow.css">
+    <script src="./mobileJs/jquery-3.4.1.min.js"></script>
+    <script src="./mobileJs/rem.js"></script>
+    <script src="./mobileJs/getApi.js"></script>
+    <script src="./layer/layer.js"></script>
+</head>
+
+<body>
+    <div id="activityFlow">
+        <div class="title">
+            <img id="goback" src="./mobileImg/icon_back.png" alt="" srcset="">
+            <div class="title_text">活动流程</div>
+            <div style="width: 0.36rem;"></div>
+        </div>
+        <div class="main">
+            <div>
+                <div class="main_top">
+                    <p class="main_top_title"></p>
+                    <p class="main_top_text"></p>
+                    <p class="main_top_adress"> </p>
+                </div>
+                <div class="main_footer">
+                    <div class="steps">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    // 滑动滚动条
+    $(window).scroll(function () {
+        if ($(window).scrollTop() >= $('.title').height() / 4 || $(window).scrollTop() < -6) {
+            $('.title').css('background', '#fff')
+        } else {
+            $('.title').css('background', '')
+        }
+    });
+    //sArgName表示要获取哪个参数的值
+    var sHref = window.location.href;
+    //CuPlayer.com提示：测试数据
+    //实际情况是用window.location.href得到URL
+    var args = sHref.split("?");
+    // var activityIds = "";
+    // if (args[0] == sHref) /*参数为空*/ {
+    //     return activityId; /*CuPlayer.com提示：无需做任何处理*/
+    // }
+    var str = args[1];
+    var activityId = "";
+    // args = str.split("&");
+    for (var i = 0; i < args.length; i++) {
+        str = args[i];
+        var arg = str.split("=");
+        if (arg.length <= 1) continue;
+        if (arg[0] == 'activityId') activityId = arg[1];
+        // if (arg[0] == 'state') activityIds = arg[1];
+    }
+    $('#activityFlow').css('height', window.innerHeight + 'px');
+    $('#goback').click(function () {
+        history.back(-1);
+    })
+    function apiInfo(activityId) {
+        // $.post(apiUrl + "activity/getFlow", { activity_id: activityId }, function (res) {
+        //     if (res.code == 0) {
+        //         $('.main_top_title').text(res.data.activity_name)
+        //         $('.main_top_adress').text(res.data.activity_address)
+        //         $('.main_top_text').text(res.data.activity_start_time + '-' + res.data.activity_end_time)
+        //         let $step = $('<div class="steps"></div>')
+        //         res.data.flow_list.forEach((item, i) => {
+        //             if (i == res.data.flow_list.length - 1) {
+        //                 let $stepMainEnd;
+        //                 if (item.begin_time) {
+        //                     $stepMainEnd = $('<div class="step"><div class="step-head"><div class="step-icon"><div class="step-circle"></div></div></div><div class="step-main">' + item.flow_name + '</div><div class="step-footer">' + item.begin_time + '-' + item.end_time + '</div></div>');
+        //                 } else {
+        //                     $stepMainEnd = $('<div class="step"><div class="step-head"><div class="step-icon"><div class="step-circle"></div></div></div><div class="step-main">' + item.flow_name + '</div><div class="step-footer">' + item.end_time + '</div></div>');
+        //                 }
+        //                 $step.append($stepMainEnd);
+        //             } else {
+        //                 let $stepMain = $('<div class="step"><div class="step-head"><div class="step-line"></div><div class="step-icon"><div class="step-circle"></div></div></div><div class="step-main">' + item.flow_name + '</div><div class="step-footer">' + item.begin_time + '-' + item.end_time + '</div></div>');
+        //                 $step.append($stepMain);
+        //             }
+
+        //         });
+        //         $('.main_footer').html($step);
+        //     }
+        // }, 'json');
+        ajax({
+            url: "activity/getFlow", // url---->地址
+            type: "POST", // type ---> 请求方式
+            async: true, // async----> 同步：false，异步：true 
+            data: { activity_id: activityId },
+            success: function (res) { //返回接受信息
+                res = JSON.parse(res);
+                if (res.code == 0) {
+                    $('.main_top_title').text(res.data.activity_name)
+                    $('.main_top_adress').text(res.data.activity_address)
+                    $('.main_top_text').text(res.data.activity_start_time + '-' + res.data.activity_end_time)
+                    let $step = $('<div class="steps"></div>')
+                    res.data.flow_list.forEach((item, i) => {
+                        if (i == res.data.flow_list.length - 1) {
+                            let $stepMainEnd;
+                            if (item.begin_time) {
+                                $stepMainEnd = $('<div class="step"><div class="step-head"><div class="step-icon"><div class="step-circle"></div></div></div><div class="step-main">' + item.flow_name + '</div><div class="step-footer">' + item.begin_time + '-' + item.end_time + '</div></div>');
+                            } else {
+                                $stepMainEnd = $('<div class="step"><div class="step-head"><div class="step-icon"><div class="step-circle"></div></div></div><div class="step-main">' + item.flow_name + '</div><div class="step-footer">' + item.end_time + '</div></div>');
+                            }
+                            $step.append($stepMainEnd);
+                        } else {
+                            let $stepMain = $('<div class="step"><div class="step-head"><div class="step-line"></div><div class="step-icon"><div class="step-circle"></div></div></div><div class="step-main">' + item.flow_name + '</div><div class="step-footer">' + item.begin_time + '-' + item.end_time + '</div></div>');
+                            $step.append($stepMain);
+                        }
+
+                    });
+                    $('.main_footer').html($step);
+                } else {
+                    layer.msg(res.msg, {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    });
+                }
+
+            }
+        })
+
+    }
+    apiInfo(activityId);
+</script>
+
+</html>

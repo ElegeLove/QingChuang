@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>搜索</title>
+    <link rel="stylesheet" href="./mobileCss/search.css">
+    <script src="./mobileJs/jquery-3.4.1.min.js"></script>
+    <script src="./mobileJs/rem.js"></script>
+    <script src="./mobileJs/getApi.js"></script>
+    <script src="./layer/layer.js"></script>
+</head>
+
+<body>
+    <div id="search">
+        <div class="title">
+            <img id="goback" src="./mobileImg/icon_back.png" alt="" srcset="">
+            <div class="title_text">
+                <img class="title_text_left" src="./mobileImg/icon_search.png" alt="" srcset="">
+                <img class="title_text_right" src="./mobileImg/icon_xx_small.png" alt="" srcset="">
+                <input class="title_text_input" type="text" name="" id="">
+            </div>
+            <div class="searchBtn">搜索</div>
+        </div>
+        <div class="main">
+
+        </div>
+    </div>
+</body>
+<script>
+    var page = document.querySelector('#search');
+
+    //sArgName表示要获取哪个参数的值
+    var sHref = window.location.href;
+    //CuPlayer.com提示：测试数据
+    //实际情况是用window.location.href得到URL
+    var args = sHref.split("?");
+    // var activityIds = "";
+    // if (args[0] == sHref) /*参数为空*/ {
+    //     return activityId; /*CuPlayer.com提示：无需做任何处理*/
+    // }
+    var str = args[1];
+    var activityId = "";
+    var userId = "";
+    args = str.split("&");
+    for (var i = 0; i < args.length; i++) {
+        str = args[i];
+        var arg = str.split("=");
+        if (arg.length <= 1) continue;
+        if (arg[0] == 'activityId') activityId = arg[1];
+        if (arg[0] == 'userId') userId = arg[1];
+    }
+    getProgram(activityId, '')
+    function getProgram(activityId, search) {
+        ajax({
+            url: "activity/segmentList", // url---->地址
+            type: "POST", // type ---> 请求方式
+            async: true, // async----> 同步：false，异步：true 
+            data: { activity_id: activityId, search: search },
+            success: function (res) { //返回接受信息
+                res = JSON.parse(res);
+                if (res.code == 0) {
+                    if (res.data.length < 5) {
+                        page.style.height = $(window).height() + 'px';
+                    }
+                    let $programMain = $('<ul class="list"></ul>')
+                    res.data.forEach((item, i) => {
+                        let str = $('<li class="list_items"><img src=' + item.img + ' alt="" srcset=""><div class="list_items_name">' + item.segment_name + '</div><div class="list_items_btm"><div class="left"><span class="left_num">' + item.vote_count + '</span>票</div><div class="right" onclick="goVote(' + item.segment_id + ')">投票</div></div></li>');
+                        $programMain.append(str);
+                    });
+                    $('.main').html($programMain)
+                } else {
+                    layer.msg(res.msg, {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    });
+                }
+
+            }
+        })
+    }
+    function goVote(id) {
+        // $.post(apiUrl + "activity/vote", { segment_id: id, user_id: userId }, function (res) {
+        //     if (res.code == 0) {
+        //         getProgram(activityId);
+        //     }
+        // }, 'json');
+        ajax({
+            url: "activity/vote", // url---->地址
+            type: "POST", // type ---> 请求方式
+            async: true, // async----> 同步：false，异步：true 
+            data: { segment_id: id, user_id: userId },
+            success: function (res) { //返回接受信息
+                res = JSON.parse(res);
+                if (res.code == 0) {
+                    getProgram(activityId, $('.title_text_input').val());
+                } else {
+                    layer.msg(res.msg, {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    });
+                }
+
+            }
+        })
+    }
+    $('#goback').click(function () {
+        history.back(-1);
+    })
+    $('.title_text_right').click(function () {
+        $('.title_text_input').val('');
+    })
+    $('.searchBtn').click(function () {
+        getProgram(activityId, $('.title_text_input').val());
+    })
+</script>
+
+</html>

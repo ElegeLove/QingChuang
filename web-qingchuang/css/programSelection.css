@@ -1,0 +1,193 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+a {
+    text-decoration: none !important;
+}
+ul{
+    list-style: none;
+}
+
+.programSelection {
+    /* width: 100%; */
+    min-width: 14.2rem;
+    height: 100%;
+    padding-top: 0.4rem;
+    background: url('../img/guestShow_bg.png') no-repeat center center;
+    background-size: 100% 100%;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.title {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.title img {
+    width: 2.52rem;
+    height: 0.63rem;
+}
+
+.main {
+    width: 100%;
+    height: 8.2rem;
+    margin-top: 0.4rem;
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+.main_list {
+    /* width: 640px;
+    height: 800px;
+    transform: rotate(-90deg);
+    overflow: auto; */
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+    /* width: 7.5rem; */
+    /* height: 14.48rem; */
+    transform: rotate(-90deg);
+    /* overflow: auto; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0.2rem 0;
+    box-sizing: border-box;
+}
+
+/* .content{
+    width: 600px;
+    height: 800px;
+    transform:rotate(-90deg);
+} */
+.list_items {
+    /* width: 494px;
+    height: 56px; */
+    margin: 0.5rem 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.list_items_name {
+    width: 1.4rem;
+    height: 0.4rem;
+    word-wrap: break-word;
+    word-break: normal;
+    font-size: 0.2rem;
+    font-family: "Microsoft YaHei";
+    font-weight: 400;
+    color: rgba(255, 255, 255, 1);
+    transform: rotate(90deg);
+    text-align: center;
+}
+
+.list_items img {
+    width: 0.64rem;
+    height: 0.64rem;
+    border-radius: 50%;
+    transform: rotate(90deg);
+    z-index: 3;
+}
+.list_items .list_main_img{
+    width: 1.13rem;
+    height: 0.8rem;
+    border-radius: 0.04rem;
+    transform: rotate(0deg);
+}
+.list_main_img_box{
+    width: 1.25rem;
+    height: 0.9rem;
+    border-radius: 0.04rem;
+    padding: 0.05rem;
+    transform: rotate(90deg);
+    box-sizing: border-box;
+    background:rgba(255,255,255,0.3);
+    z-index: 3;
+}
+.list_items_title {
+    display: inline-block;
+    font-size: 0.15rem;
+    font-family: "Microsoft YaHei";
+    font-weight: bold;
+    color: rgba(242, 119, 81, 1);
+    transform: rotate(90deg);
+    margin-left: 0.1rem;
+}
+
+.progress {
+    /* width: 4.94rem;
+    height: 0.4rem; */
+    width: 4.5rem;
+    height: 0.6rem;
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, .1);
+    border: 0.01rem solid rgba(255, 255, 255, 1);
+    border-radius: 0.04rem;
+    margin: 0;
+    margin-left: -0.4rem;
+    z-index: 1;
+}
+
+.footerMain{
+    width: 100%;
+    height: 0.9rem;
+    background:rgba(0,0,0,0.1);
+    position: fixed;
+    bottom: 0;
+}
+.footer{
+    width: 100%;
+    height: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.footer img{
+    width: 0.42rem;
+    height: 0.42rem;
+}
+.footerLeft,.footerRight{
+    display: flex;
+    align-items: center;
+}
+.footerLeft_items{
+    text-align: center;
+    margin: 0 0.18rem;
+    text-decoration: none;
+    display: block;
+    position: relative;
+}
+.footerLeft_items:hover{
+    text-decoration: none;
+}
+.footerLeft_items:first-child{
+    margin-left: 0.4rem;
+}
+.footerLeft_items p{
+    margin: 0;
+    margin-top: 0.08rem;
+    font-size:0.12rem;
+    font-family:'Microsoft YaHei';
+    font-weight:400;
+    color:#fff;
+}
+.footerRight:last-child{
+    margin-right: 0.2rem;
+}
+.footer .imgProhibit,.footer .imgVoice{
+    width: 0.16rem;
+    height: 0.16rem;
+    position: absolute;
+    top: 0.24rem;
+    left: 0.13rem;
+}
+.imgVoice{
+    display: none;
+}

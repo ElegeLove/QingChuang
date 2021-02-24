@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>做问卷</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="./mobileCss/simple-bs-dialog.min.css">
+    <link rel="stylesheet" href="./mobileCss/questionnaire.css">
+    <script src="./mobileJs/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+    <script src="./mobileJs/rem.js"></script>
+    <script src="./mobileJs/simple-bs-dialog.min.js"></script>
+    <script src="./mobileJs/getApi.js"></script>
+    <script src="./layer/layer.js"></script>
+</head>
+
+<body>
+    <div id="questionnaire">
+        <div class="title">
+            <img id="goback" src="./mobileImg/icon_back.png" alt="" srcset="">
+            <div class="title_text">做问卷</div>
+            <div style="width: 0.36rem;"></div>
+        </div>
+        <div class="main">
+            <h2 class="main_title">年会节目满意度问卷调查</h2>
+            <div class="main_problem_box"></div>
+            <!-- <div class="main_box">
+                <h3 class="main_problem">1.您的性别<span class="main_problem_tab">*</span></h3>
+                <ul class="main_sex_list">
+                    <li>
+                        <img src="./mobileImg/icon_picker_selected.png" alt="" srcset="">
+                        <div>男</div>
+                    </li>
+                    <li>
+                        <img src="./mobileImg/icon_picker.png" alt="" srcset="">
+                        <div>女</div>
+                    </li>
+                </ul>
+                <form class="main_sex_list">
+                    <div>
+                        <input id="item1" type="radio" name="item" value="男" checked>
+                        <label for="item1"></label>
+                        <span style="margin-left: 10px">男</span>
+                    </div>
+                    <div>
+                        <input id="item2" type="radio" name="item" value="女">
+                        <label for="item2"></label>
+                        <span style="margin-left: 10px">女</span>
+                    </div> 
+                </form>
+            </div>
+            <div class="main_box">
+                <h3 class="main_problem">2.您对本次年会的节目安排是否满意<span class="main_problem_tab">*</span></h3>
+                <ul class="main_satisfy_list">
+                    <li>
+                        <img src="./mobileImg/icon_picker_selected.png" alt="" srcset="">
+                        <div>非常满意</div>
+                    </li>
+                    <li>
+                        <img src="./mobileImg/icon_picker.png" alt="" srcset="">
+                        <div>满意</div>
+                    </li>
+                    <li>
+                        <img src="./mobileImg/icon_picker.png" alt="" srcset="">
+                        <div>不太满意</div>
+                    </li>
+                    <li>
+                        <img src="./mobileImg/icon_picker.png" alt="" srcset="">
+                        <div>非常不满意</div>
+                    </li>
+                </ul>
+            </div>
+            <div class="main_box">
+                <h3 class="main_problem">3.您的建议</h3>
+                <textarea class="main_problem_area" placeholder="请输入您的建议" name="" id="" cols="30" rows="10"></textarea>
+            </div> -->
+            <div class="footer">
+                <div class="footer_btn">提交</div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    //sArgName表示要获取哪个参数的值
+    var sHref = window.location.href;
+    //CuPlayer.com提示：测试数据
+    //实际情况是用window.location.href得到URL
+    var args = sHref.split("?");
+    // var activityIds = "";
+    // if (args[0] == sHref) /*参数为空*/ {
+    //     return activityId; /*CuPlayer.com提示：无需做任何处理*/
+    // }
+    var str = args[1];
+    var activityId = "";
+    var userId = "";
+    // // 手机摇一摇事件
+    // const SHAKE_SPEED = 300;
+    // let lastTime = 0;//上次变化的时间
+    // let x = y = z = lastX = lastY = lastZ = 0;//位置变量初始化
+
+    args = str.split("&");
+    for (var i = 0; i < args.length; i++) {
+        str = args[i];
+        var arg = str.split("=");
+        if (arg.length <= 1) continue;
+        if (arg[0] == 'activityId') activityId = arg[1];
+        if (arg[0] == 'userId') userId = arg[1];
+    }
+    let dataInfo = [];
+    var flag = false;
+    getAnswer(flag)
+    function getAnswer(flag) {
+        ajax({
+            url: "activity/answer", // url---->地址
+            type: "POST", // type ---> 请求方式
+            async: true, // async----> 同步：false，异步：true 
+            data: { activity_id: activityId, user_id: userId },
+            success: function (res) { //返回接受信息
+                res = JSON.parse(res);
+                if (res.code == 0) {
+                    if (res.data.is_answer == 2) {
+                        let $box = $('<div class="main_problem_box"></div>')
+                        dataInfo = res.data.answer_list;
+                        res.data.answer_list.forEach((item, i) => {
+                            //  class="active"
+                            let num = i + 1;
+                            let $div;
+                            if (item.is_must == 1) {
+                                $div = $('<div class="main_box"><h3 class="main_problem">' + num + '.' + item.title + '<span class="main_problem_tab">*</span></h3><ul class="main_sex_list"></ul></div>');
+                            } else {
+                                $div = $('<div class="main_box"><h3 class="main_problem">' + num + '.' + item.title + '</h3><ul class="main_sex_list"></ul></div>');
+                            }
+                            item.option_list.forEach((items, i2) => {
+                                items.selected = flag;
+                                let $li = $('<li id=' + items.option_id + ' onclick=selectId(' + item.answer_id + ',' + items.option_id + ',' + i + ',' + i2 + ',' + item.type + ')><img class="pickImg" src="./mobileImg/icon_picker.png" alt="" srcset=""><div>' + items.content + '</div></li>')
+                                $div.children('.main_sex_list').append($li)
+                            })
+                            // if (i == 0) {
+                            //     $li.addClass("change");
+                            //     $li.children('p').addClass("active");
+                            // }
+                            $box.append($div);
+                        });
+                        $('.main_problem_box').replaceWith($box);
+                    } else {
+                        $(window).attr('location', "subSuccess.html")
+                    }
+                } else {
+                    layer.msg(res.msg, {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    });
+                }
+
+            }
+        })
+    }
+    $('#goback').click(function () {
+        history.back(-1);
+    })
+    function selectedClick(that) {
+        that.siblings().children('img').attr('src', "./mobileImg/icon_picker.png");
+        that.children('img').attr('src', "./mobileImg/icon_picker_selected.png");
+    }
+    $('.main_sex_list li').click(function () {
+        selectedClick($(this));
+    })
+    var answerId = '';
+    var optionId = '';
+    var answerId = '';
+    var optionId = '';
+    var submitContent = [];
+    var obj = {}
+    function selectId(tId, mId, i, i2, type) {
+        if (type == 1) {
+            $('#' + mId).closest(".main_sex_list").find(".pickImg").attr('src', './mobileImg/icon_picker.png');
+            $('#' + mId).find(".pickImg").attr('src', './mobileImg/icon_picker_selected.png');
+            if (submitContent.length > 0) {
+                let arr = submitContent.filter(item => (item.answer_id == tId));
+                if (arr.length > 0) {
+                    submitContent.filter(item => (item.answer_id == tId)).map(item => item.content = mId)
+                } else {
+                    obj = {
+                        answer_id: tId,
+                        content: mId
+                    }
+                    submitContent.push(obj);
+                }
+            } else {
+                obj = {
+                    answer_id: tId,
+                    content: mId
+                }
+                submitContent.push(obj);
+            }
+        } else if (type == 2) {
+            let arr = [];
+            if ($('#' + mId).find(".pickImg").attr('src') == './mobileImg/icon_picker_selected.png') {
+                $('#' + mId).find(".pickImg").attr('src', './mobileImg/icon_picker.png');
+                // let arr1 = submitContent.filter(item => (item.answer_id == tId));
+                submitContent.filter(item => (item.answer_id == tId)).map((items, i) => {
+                    arr = items.content.split(',');
+                    if (arr.length == 1) {
+                        submitContent.splice($.inArray(items, submitContent), 1);
+                    } else {
+                        arr.splice($.inArray(JSON.stringify(mId), arr), 1);
+                        // arr.remove(mId);
+                        items.content = arr.join(',');
+                    }
+                })
+            } else {
+                $('#' + mId).find(".pickImg").attr('src', './mobileImg/icon_picker_selected.png');
+                if (submitContent.length > 0) {
+                    let arr1 = submitContent.filter(item => (item.answer_id == tId));
+                    if (arr1.length > 0) {
+                        arr1.map(item => {
+                            arr = item.content.split(',');
+                            arr.push(mId);
+                            item.content = arr.join(',')
+                        })
+                    } else {
+                        arr.push(mId);
+                        obj = {
+                            answer_id: tId,
+                            content: arr.join(',')
+                        }
+                        submitContent.push(obj);
+                    }
+                } else {
+                    arr.push(mId);
+                    obj = {
+                        answer_id: tId,
+                        content: arr.join(',')
+                    }
+                    submitContent.push(obj);
+                }
+            }
+        }
+
+    }
+    $('.main_satisfy_list li').click(function () {
+        selectedClick($(this));
+    })
+    $('.footer_btn').click(function () {
+        let arr = submitContent.map(item => item.answer_id);
+        let flag = true;
+        dataInfo.filter(item1 => item1.is_must == 1).forEach(item2 => {
+            if ($.inArray(item2.answer_id, arr) < 0) {
+                return flag = false;
+            }
+        })
+        if (flag) {
+            layer.open({
+                type: 1,
+                title: '提示',
+                content: '确定提交该问卷吗？',
+                btn: ['取消', '确定'],
+                scrollbar: false,
+                shadeClose: true,
+                btn1: function (index) {
+                    layer.close(index);
+                },
+                btn2: function (index) {
+                    ajax({
+                        url: "activity/submitAnswer", // url---->地址
+                        type: "POST", // type ---> 请求方式
+                        async: true, // async----> 同步：false，异步：true 
+                        data: { activity_id: activityId, user_id: userId, submit_content: JSON.stringify(submitContent) },
+                        success: function (res) { //返回接受信息
+                            res = JSON.parse(res);
+                            if (res.code == 0) {
+                                $(window).attr('location', "subSuccess.html")
+                            } else {
+                                layer.msg(res.msg, {
+                                    icon: 1,
+                                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                                });
+                            }
+
+                        }
+                    })
+                },
+            });
+        } else {
+            layer.msg('请完成调查后提交！', {
+                icon: 1,
+                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+            });
+        }
+    })
+</script>
+
+</html>

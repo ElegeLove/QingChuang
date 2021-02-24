@@ -1,0 +1,82 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+ul li {
+    list-style: none;
+}
+
+#rankingList {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.title {
+    width: 100%;
+    height: 0.88rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 0.24rem;
+    background: #fff;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    z-index: 1;
+}
+
+.title img {
+    width: 0.36rem;
+    height: 0.36rem;
+}
+
+.title_text {
+    font-size: 0.32rem;
+    font-family: 'PingFangSC-Medium,PingFang SC';
+    font-weight: 500;
+    color: #000;
+    line-height: 0.48rem;
+}
+
+.main {
+    margin-top: 0.88rem;
+    padding-top: 0.46rem;
+}
+
+.items {
+    width: 100%;
+    padding: 0 0.24rem;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.32rem;
+    font-size: 0.28rem;
+    font-family: 'PingFangSC-Regular,PingFang SC';
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.8);
+    line-height: 0.44rem;
+}
+.items:nth-child(1) .item_left_num{
+    color:rgba(250,202,43,1);
+}
+.items:nth-child(2) .item_left_num{
+    color:rgba(161,161,161,1);
+}
+.items:nth-child(3) .item_left_num{
+    color:rgba(209,118,25,1);
+}
+.item_left {
+    display: flex;
+    align-items: center;
+}
+
+.item_left_num {
+    font-size: 0.48rem;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.85);
+    line-height: 0.56rem;
+    margin-right: 0.4rem;
+}

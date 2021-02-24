@@ -1,0 +1,116 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: #9E1811;
+}
+
+#orderSet {
+    width: 100%;
+    height: 100%;
+    background: url('../mobileImg/orderSet_bg.png');
+    background-size: 100% 100%;
+    padding-bottom: 0.2rem;
+    box-sizing: border-box;
+}
+
+.big_top_bg {
+    width: 100%;
+    height: 9rem;
+    padding-top: 1rem;
+    box-sizing: border-box;
+}
+
+.title {
+    width: 100%;
+    height: 0.88rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.2rem 0.24rem;
+    position: fixed;
+    top: 0;
+    box-sizing: border-box;
+}
+
+.title img {
+    width: 0.36rem;
+    height: 0.36rem;
+}
+
+.title_text {
+    font-size: 0.32rem;
+    font-family: 'PingFangSC-Medium,PingFang SC';
+    font-weight: 500;
+    color: #fff;
+    line-height: 0.48rem;
+}
+
+.orderSet_title {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.orderSet_title_main {
+    width: 4.8rem;
+    height: 1.6rem;
+    background: rgba(255, 166, 0, 1);
+    border-radius: 0.08rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.32rem;
+    font-family: 'PingFangSC-Medium,PingFang SC';
+    font-weight: 400;
+    color: rgba(255, 255, 255, 1);
+    line-height: 0.44rem;
+}
+
+.seat {
+    width: 100%;
+    font-size: 0.4rem;
+    font-family: 'PingFangSC-Regular,PingFang SC';
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.8);
+    line-height: 0.6rem;
+    text-align: center;
+    margin-top: 0.6rem;
+    box-sizing: border-box;
+}
+
+.orderSet_main {
+    width: 100%;
+    padding: 0 0.24rem;
+    box-sizing: border-box;
+}
+
+.sear_img {
+    width: 100%;
+    /* height: 7.02rem; */
+    /* background-image: url('');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 100% 100%; */
+    margin: 0.6rem 0;
+    box-sizing: border-box;
+}
+
+.over {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+.tempContainer {
+    position: fixed;
+    width: 100%;
+    margin-right: 0px;
+    margin-left: 0px;
+    text-align: center;
+    z-index: 101;
+}

@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>抢红包</title>
+    <link rel="stylesheet" href="./mobileCss/redEnvelope.css">
+    <link rel="stylesheet" href="./mobileCss/hongbao.css">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+        integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css"
+        integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
+
+    <script src="./mobileJs/jquery-3.4.1.min.js"></script>
+    <script src="./mobileJs/rem.js"></script>
+    <script src="./mobileJs/hongbao.js"></script>
+    <script src="./mobileJs/getApi.js"></script>
+    <script src="./layer/layer.js"></script>
+</head>
+
+<body>
+    <div id="redEnvelope">
+        <div class="title">
+            <img id="goback" src="./mobileImg/icon_back.png" alt="" srcset="">
+            <div class="title_text">抢红包</div>
+            <div style="width: 0.36rem;"></div>
+        </div>
+        <div class="main">
+            <div class="main_timer">
+                <div class="main_timer_title">
+                    <div>倒计时：<span class="main_timer_num"></span><span class="main_timer_unit">s</span></div>
+                </div>
+                <div class="main_timer_text">请摇动手机，赢取红包大奖</div>
+            </div>
+            <div id="petalbox"></div>
+        </div>
+        <div class="hbEnd">
+            <div class="hbEnd_main">
+                <div class="hbEnd_main_box">
+                    <div class="hbEnd_main_text">
+                        <p class="hbEnd_title">本轮已结束</p>
+                        <p class="hbEnd_text">等待下一轮开始</p>
+                        <!-- <p class="hbEnd_time">04:23:15</p> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hbStart">
+            <div class="hbStart_main">
+                <div class="hbStart_main_box">
+                    <div class="hbStart_main_text">
+                        <p class="hbStart_title">抢红包暂未开始</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="getStart">
+            <div class="getStart_main">
+                <div class="getStart_main_box">
+                    <div class="getStart_main_text">
+                        <p class="getStart_title">恭喜你获得现金红包</p>
+                        <p class="getStart_text"></p>
+                        <p class="getStart_tip">24小时之内存入您的账户中</p>
+                    </div>
+                    <div class="getStart_btn">
+                        <div class="getStart_btn_text" onclick="sendAccept()">收下了</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer"></div>
+    </div>
+</body>
+<script>
+    //sArgName表示要获取哪个参数的值
+    var sHref = window.location.href;
+    //CuPlayer.com提示：测试数据
+    //实际情况是用window.location.href得到URL
+    var args = sHref.split("?");
+    // var activityIds = "";
+    // if (args[0] == sHref) /*参数为空*/ {
+    //     return activityId; /*CuPlayer.com提示：无需做任何处理*/
+    // }
+    var str = args[1];
+    var activityId = "";
+    var userId = "";
+    var redId = "";
+    // 手机摇一摇事件
+    var SHAKE_THRESHOLD = 4000;
+    var last_update = 0;
+    var x, y, z, last_x = 0, last_y = 0, last_z = 0;
+
+    args = str.split("&");
+    for (var i = 0; i < args.length; i++) {
+        str = args[i];
+        var arg = str.split("=");
+        if (arg.length <= 1) continue;
+        if (arg[0] == 'activityId') activityId = arg[1];
+        if (arg[0] == 'userId') userId = arg[1];
+    }
+    ajax({
+        url: "activity/getRedInfo", // url---->地址
+        type: "POST", // type ---> 请求方式
+        async: true, // async----> 同步：false，异步：true 
+        data: { activity_id: activityId },
+        success: function (res) { //返回接受信息
+            res = JSON.parse(res);
+            if (res.code == 0) {
+                // if (res.data != '' || res.data != {} || res.data != undefined) {
+                //     redId = res.data.red_id;
+                //     if (res.data.status == 1) {
+                //         $('.main_timer_title').text('');
+                //         $('.main_timer_unit').css('display', 'none');
+                //         $('#petalbox').remove();
+                //         $('.footer').css('background-image', "url('./mobileImg/hongbao_footer_null.png')")
+                //         // console.log($('.main_timer_title').html)
+                //         // $('.main_timer_title').html = '';
+                //         $('.hbStart').css('display', 'block');
+                //         $('.hbStart_title').text('抢红包暂未开始');
+                //         // setTime($('.hbStart_time'));
+                //     } else if (res.data.status == 2) {
+                //         // console.log(Number(res.data.red_chixu_time))
+                //         var timestamp3 = Date.parse(new Date()) / 1000;
+                //         var timeRed = res.data.red_chixu_time - (timestamp3 - res.data.start_time);
+                //         $('.main_timer_num').text(timeRed);
+                //         getRandomCode(timeRed);
+                //         // var SHAKE_THRESHOLD = 3000;
+                //         // var x = y = z = last_x = last_y = last_z = 0;
+                //         // if (window.DeviceMotionEvent) {
+                //         //     //     // layer.msg(res.msg, {
+                //         //     //     //     icon: 1,
+                //         //     //     //     time: 20000 //2秒关闭（如果不配置，默认是3秒）
+                //         //     //     // });
+                //         //     //     // alert(window.DeviceMotionEvent);
+                //         //     //     // window.addEventListener('devicemotion', motionHandler, false);
+                //         //     // alert(111)
+                //         //     window.addEventListener('devicemotion', deviceMotionHandler, false);
+
+                //         // } else {
+                //         //     alert("你的设备不支持位置感应");
+                //         // }
+                //         if (window.DeviceMotionEvent) {
+                //             window.addEventListener('devicemotion', deviceMotionHandler, false);
+                //         } else {
+                //             alert("你的设备不支持位置感应");
+                //         }
+                //         // init();
+                //         // shake(function () {
+                //         //     alert(111)
+                //         //     js_shake();
+                //         // })
+                //         //获取加速度信息
+                //         //通过监听上一步获取到的x, y, z 值在一定时间范围内的变化率，进行设备是否有进行晃动的判断。
+                //         //而为了防止正常移动的误判，需要给该变化率设置一个合适的临界值。
+
+                //         // deviceMotionHandler(eventData);
+                //         // res.data.red_sustain_time
+
+                //         // setTime($('.hbEnd_time'));
+
+                //     } else if (res.data.status == 3) {
+                //         $('#petalbox').remove();
+                //         $('.main_timer_num').text('已结束');
+                //         $('.main_timer_unit').css('display', 'none');
+                //         $('.footer').css('background-image', "url('./mobileImg/hongbao_footer.png')")
+                //         // console.log($('.main_timer_title').html)
+                //         // $('.main_timer_title').html = '';
+                //         $('.hbEnd').css('display', 'block')
+                //         $('.hbEnd_title').text('本轮已结束');
+                //         $('.hbEnd_text').text('等待下一轮开始');
+                //     }
+                // } else {
+                //     $('.main_timer_title').text('');
+                //     $('.main_timer_unit').css('display', 'none');
+                //     $('#petalbox').remove();
+                //     $('.footer').css('background-image', "url('./mobileImg/hongbao_footer_null.png')")
+                //     // console.log($('.main_timer_title').html)
+                //     // $('.main_timer_title').html = '';
+                //     $('.hbStart').css('display', 'block');
+                //     $('.hbStart_title').text('该红包不存在！');
+                // }
+                if (res.data == '') {
+                    $('.main_timer_title').text('');
+                    $('.main_timer_unit').css('display', 'none');
+                    $('#petalbox').remove();
+                    $('.footer').css('background-image', "url('./mobileImg/hongbao_footer_null.png')")
+                    $('.hbStart').css('display', 'block');
+                    $('.hbStart_title').text('该红包不存在！');
+                } else {
+                    redId = res.data.red_id;
+                    if (res.data.status == 1) {
+                        $('.main_timer_title').text('');
+                        $('.main_timer_unit').css('display', 'none');
+                        $('#petalbox').remove();
+                        $('.footer').css('background-image', "url('./mobileImg/hongbao_footer_null.png')")
+                        $('.hbStart').css('display', 'block');
+                        $('.hbStart_title').text('抢红包暂未开始');
+                    } else if (res.data.status == 2) {
+                        var timestamp3 = Date.parse(new Date()) / 1000;
+                        var timeRed = res.data.red_chixu_time - (timestamp3 - res.data.start_time);
+                        $('.main_timer_num').text(timeRed);
+                        getRandomCode(timeRed);
+                        if (window.DeviceMotionEvent) {
+                            window.addEventListener('devicemotion', deviceMotionHandler, false);
+                        } else {
+                            alert("你的设备不支持位置感应");
+                        }
+
+                    } else if (res.data.status == 3) {
+                        $('#petalbox').remove();
+                        $('.main_timer_num').text('已结束');
+                        $('.main_timer_unit').css('display', 'none');
+                        $('.footer').css('background-image', "url('./mobileImg/hongbao_footer.png')")
+                        // console.log($('.main_timer_title').html)
+                        // $('.main_timer_title').html = '';
+                        $('.hbEnd').css('display', 'block')
+                        $('.hbEnd_title').text('本轮已结束');
+                        $('.hbEnd_text').text('等待下一轮开始');
+                    }
+                }
+            } else {
+                layer.msg(res.msg, {
+                    icon: 1,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                });
+            }
+
+        }
+    })
+    function sendAccept() {
+        $('.getStart').css('display', 'none');
+    }
+    // let ids = 58;
+    function js_shake() {
+        ajax({
+            url: "activity/getRed", // url---->地址
+            type: "POST", // type ---> 请求方式
+            async: true, // async----> 同步：false，异步：true 
+            data: { red_id: redId, user_id: userId },
+            success: function (res1) { //返回接受信息
+                res1 = JSON.parse(res1);
+                if (res1.code == 0) {
+                    $('#petalbox').remove();
+                    $('.main_timer_num').text('已结束')
+                    $('.main_timer_unit').css('display', 'none');
+                    $('.footer').css('background-image', "url('./mobileImg/hongbao_footer.png')")
+                    // console.log($('.main_timer_title').html)
+                    // $('.main_timer_title').html = '';
+                    $('.getStart').css('display', 'block');
+                    $('.getStart_text').text(res1.data.money);
+                } else {
+                    $('#petalbox').remove();
+                    $('.main_timer_num').text('已结束');
+                    // $('.hbEnd_title').text('您已摇过该红包！');
+                    $('.hbEnd_title').text(res1.msg);
+                    $('.hbEnd_text').text('');
+                    $('.main_timer_unit').css('display', 'none');
+                    $('.footer').css('background-image', "url('./mobileImg/hongbao_footer.png')");
+                    // console.log($('.main_timer_title').html)
+                    // $('.main_timer_title').html = '';
+                    $('.hbEnd').css('display', 'block')
+                }
+
+            },
+            error: function (err) {
+                layer.msg(err, {
+                    icon: 1,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                });
+            }
+        })
+    }
+    $('#redEnvelope').css('height', window.innerHeight + 'px');
+    $('#goback').click(function () {
+        history.back(-1);
+    })
+    var flag = 30;
+    var tiems_num = document.querySelector('.main_timer_num');
+    function getRandomCode(item) {
+        var val = $(".main_timer_num").text();
+        var ival = parseInt(val);//如果变量val是字符类型的数则转换为int类型 如果不是则ival为NaN
+        if (!isNaN(ival)) {
+            if (item <= 0) {
+                $('.hbEnd').css('display', 'block')
+                $('.hbEnd_title').text('本轮已结束');
+                $('.hbEnd_text').text('等待下一轮开始');
+                $('.main_timer_num').text('已结束')
+                $('.main_timer_unit').css('display', 'none');
+                $('#petalbox').remove()
+                // flag = 30;
+                // return;
+            } else {
+                item--;
+                tiems_num.innerHTML = item;
+                $('.main_timer_unit').css('display', 'inline-block');
+            }
+            setTimeout(function () {
+                getRandomCode(item);
+            }, 1000);
+        } else {
+            $('.main_timer_unit').css('display', 'none');
+        }
+    }
+
+    function is_weixn() {
+        var ua = navigator.userAgent.toLowerCase();
+        if (ua.match(/MicroMessenger/i) == "micromessenger") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    if (is_weixn()) {
+        //运动事件监听
+        // if (window.DeviceMotionEvent) {
+        //     window.addEventListener('devicemotion', deviceMotionHandler, false);
+        // }
+        //获取加速度信息
+        //通过监听上一步获取到的x, y, z 值在一定时间范围内的变化率，进行设备是否有进行晃动的判断。
+        //而为了防止正常移动的误判，需要给该变化率设置一个合适的临界值。
+        // var SHAKE_THRESHOLD = 5000;
+        // var last_update = 0;
+        // var x, y, z, last_x = 0, last_y = 0, last_z = 0;
+        // shake(function () {
+        //     js_shake();
+        // })
+    }
+    function deviceMotionHandler(eventData) {
+        var acceleration = eventData.accelerationIncludingGravity;
+        var curTime = new Date().getTime();
+        if ((curTime - last_update) > 10) {
+            var diffTime = curTime - last_update;
+            last_update = curTime;
+            x = acceleration.x;
+            y = acceleration.y;
+            z = acceleration.z;
+            var speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
+            if (speed > SHAKE_THRESHOLD) {
+                js_shake(); // Do something
+            }
+            last_x = x;
+            last_y = y;
+            last_z = z;
+        }
+    }
+    // init()
+    function init() {
+        if (window.DeviceMotionEvent) {
+            window.addEventListener('devicemotion', deviceMotionHandler, false);
+        } else {
+            alert('not support mobile event');
+        }
+    }
+    //添加事件
+    function shake(callBack) {
+        var last_x = last_y = last_z = 0;
+        var last_time = new Date().getTime();
+        function initional() {
+            if (window.DeviceMotionEvent) { window.addEventListener("deviceMotion", motionEvent, false); }
+            else { alert("您的手机不支持摇一摇"); }
+        }
+
+        function motionEvent(e) {
+            var ev = e || window.event;
+            var gravity = ev.accelerationIncludingGravity;
+            var currentTime = new Date().getTime();
+            //晃动时间间隔大于100毫秒，则认为晃动了两次
+            if (currentTime - last_time > 100) {
+                //当前三者的和与上一次三者的和进行差值比较，然后除以时间差，最后乘以10000
+                var x = gravity.x;
+                var y = gravity.y;
+                var z = gravity.z;
+                var speed = Math.abs(x + y + z - (last_x + last_y + last_z)) / (currentTime - last_time) * 10000;
+                //判断是否算是摇一摇成功
+                if (speed > 3000) {
+                    //判断回调函数是否存在
+                    if (callBack) { callback(); }
+                }
+                last_x = x;
+                last_y = y;
+                last_z = z;
+                last_time = currentTime;
+            }
+        }
+    }
+
+    // function deviceMotionHandler(eventData) {
+    //     var acceleration = eventData.accelerationIncludingGravity;
+    //     var curTime = new Date().getTime();
+    //     if ((curTime - last_update) > 10) {
+    //         var diffTime = curTime - last_update;
+    //         last_update = curTime;
+    //         x = acceleration.x;
+    //         y = acceleration.y;
+    //         z = acceleration.z;
+    //         var speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
+    //         if (speed > 3000) {
+    //             js_shake()// Do something
+    //         }
+    //         last_x = x;
+    //         last_y = y;
+    //         last_z = z;
+    //     }
+    // }
+    function setTime(timeDom) {
+        var h = 4;
+        var m = 23;
+        var s = 15;
+        // var timeDom = $('.hbEnd_time');
+        // var timeDom = $('.hbStart_time');
+        var timer = setInterval(function () {
+            if (h < 10) {
+                //如果秒数少于10在前面加上0
+                // $('.hbEnd_time').html('0' + h + ':' + m + ':0' + s);
+                if (m < 10) {
+                    //如果秒数少于10在前面加上0
+                    // $('.hbEnd_time').html(m + ':0' + s);
+                    if (s < 10) {
+                        //如果秒数少于10在前面加上0
+                        timeDom.html('0' + h + ':0' + m + ':0' + s);
+                    } else {
+                        timeDom.html('0' + h + ':0' + m + ':' + s);
+                    }
+                } else {
+                    // $('.hbEnd_time').html(m + ':' + s);
+                    if (s < 10) {
+                        //如果秒数少于10在前面加上0
+                        timeDom.html('0' + h + ':' + m + ':0' + s);
+                    } else {
+                        timeDom.html('0' + h + ':' + m + ':' + s);
+                    }
+                }
+            } else {
+                // timeDom.html(m + ':' + s);
+                if (m < 10) {
+                    //如果秒数少于10在前面加上0
+                    // timeDom.html(m + ':0' + s);
+                    if (s < 10) {
+                        //如果秒数少于10在前面加上0
+                        timeDom.html(h + ':0' + m + ':0' + s);
+                    } else {
+                        timeDom.html(h + ':0' + m + ':' + s);
+                    }
+                } else {
+                    // timeDom.html(m + ':' + s);
+                    if (s < 10) {
+                        //如果秒数少于10在前面加上0
+                        timeDom.html(h + ':' + m + ':0' + s);
+                    } else {
+                        timeDom.html(h + ':' + m + ':' + s);
+                    }
+                }
+            }
+            s--;
+            if (s < 0) {
+                //如果秒数少于0就变成59秒
+                s = 59;
+                m--;
+            }
+            if (m < 0) {
+                m = 59;
+                h--;
+            }
+            if (h < 0) {
+                clearInterval(timer)
+            }
+        }, 1000)
+    }
+</script>
+
+</html>
